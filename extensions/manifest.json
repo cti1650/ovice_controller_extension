@@ -1,0 +1,15 @@
+{
+  "name": "Localhost Tester Extension",
+  "description": "Localhost Tester Extension",
+  "version": "0.0.29",
+  "action": {
+    "default_popup": "./dist/index.html"
+  },
+  "permissions": [
+    "contextMenus",
+    "activeTab",
+    "tabs",
+    "scripting"
+  ],
+  "manifest_version": 3
+}

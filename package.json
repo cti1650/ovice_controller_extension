@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+    "autoprefixer": "^10.3.4",
+    "chrome_extension_maker_tools": "https://github.com/cti1650/chrome_extension_maker_tools",
+    "next": "^11.1.2",
+    "postcss": "^8.3.6",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "tailwindcss": "^2.2.15"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "start": "next start",
+    "build": "next build",
+    "export": "next build && next export -o extensions/dist && yarn ext-patch"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.180",
+    "@types/node": "^16.9.1",
+    "@types/react": "^17.0.21",
+    "typescript": "^4.4.3"
+  }
+}
