@@ -1,7 +1,7 @@
 {
-  "name": "Localhost Tester Extension",
-  "description": "Localhost Tester Extension",
-  "version": "0.0.29",
+  "name": "oVice Controller Extension",
+  "description": "oVice Controller Extension",
+  "version": "0.0.28",
   "action": {
     "default_popup": "./dist/index.html"
   },
@@ -9,7 +9,11 @@
     "contextMenus",
     "activeTab",
     "tabs",
-    "scripting"
+    "scripting",
+    "notifications"
+  ],
+  "host_permissions": [
+    "*://*/*"
   ],
   "manifest_version": 3
 }

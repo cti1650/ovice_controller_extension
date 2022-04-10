@@ -3,78 +3,61 @@ import { TextBox } from '@components/TextBox';
 import { Buttons } from '@components/Button';
 import { Title } from '@components/Title';
 import { Layout } from '@components/Layout';
+import { useOviceMic } from 'src/hooks/useOvice';
 
 const Pages = () => {
     const [keyword, setKeyword] = useState('')
     const [exclusionKeyword, setExclusionKeyword] = useState('')
     const [extensionKeyword, setExtensionKeyword] = useState('')
-    const handleClick = async (event) => {
+    const {mic, active,close,coffee ,changeMic} = useOviceMic()
+    const handleClick = (event) => {
         if (chrome && chrome.tabs) {
-            // let queryOptions = { active: true, currentWindow: true };
-            // let [tab] = await chrome.tabs.query(queryOptions);
-            let tabs = await chrome.tabs.query({})
-            tabs.forEach(tab => {
-                if (/https?:\/\/.*?\.ovice\.in/.test(tab.url)) {
-                    chrome.scripting.executeScript(
-                        {
-                            target: { tabId: tab.id },
-                            func: () => {
-                                console.log(window)
-                                console.log(document)
-                                const ele = document.querySelector("#mic-block > div")
-                                ele['click']()
-                                if (ele.querySelector(".bar-device-off")) {
-                                    console.log("mic off")
-                                }
-                                if (ele.querySelector(".bar-device-on")) {
-                                    console.log("mic on")
-                                }
-                            }
-                        },
-                        () => { }
-                    );
-                }
-            })
+            changeMic(!mic)
         }
     }
     const handleMove = async (event) => {
         if (chrome && chrome.tabs) {
             // let queryOptions = { active: true, currentWindow: true };
             // let [tab] = await chrome.tabs.query(queryOptions);
-            let tabs = await chrome.tabs.query({})
-            tabs.forEach(tab => {
-                if (/https?:\/\/.*?\.ovice\.in/.test(tab.url)) {
-                    chrome.tabs.update( tab.id, {selected:true}, function(tab){});
-                }
-            })
+            // let tabs = await chrome.tabs.query({})
+            // tabs.forEach(tab => {
+            //     if (/https?:\/\/.*?\.ovice\.in/.test(tab.url)) {
+            //         chrome.tabs.update( tab.id, {selected:true}, function(tab){});
+            //     }
+            // })
+            active()
+        }
+    }
+    const handleClose = async (event) => {
+        if (chrome && chrome.tabs) {
+            close()
+        }
+    }
+    const handleCoffee = async (event) => {
+        if (chrome && chrome.tabs) {
+            coffee()
         }
     }
     return (
         <>
-            <Layout title={'GitHub Search Extension'}>
-                <TextBox
-                    value={keyword}
-                    onChange={setKeyword}
-                    label='Keyword'
-                    placeholder='Search or jump to… ( keyword )'
-                    holder='search_keyword' />
-                <TextBox
-                    value={exclusionKeyword}
-                    onChange={setExclusionKeyword}
-                    label='Exclusion'
-                    placeholder='Add keywords for searching ( -keyword )'
-                    holder='search_exclusion_keyword' />
-                <TextBox
-                    value={extensionKeyword}
-                    onChange={setExtensionKeyword}
-                    label='File or Extension'
-                    placeholder='file extension keyword ( tsx,ts )'
-                    holder='search_file_extension_keyword' />
+            <Layout title={'oVice Controller Extension'}>
                 <Buttons
-                    label='Search Type'
+                    label='Mic Control'
                     buttons={[
-                        { label: 'Login', onClick: handleClick },
+                        { label: `mic ${mic?'on':'off'}`, onClick: handleClick, on: mic }
+                    ]}
+                />
+                <Buttons
+                    label='Tab Control'
+                    buttons={[
                         { label: 'Focus', onClick: handleMove }
+                    ]}
+                />
+                <Buttons
+                    label='Close Control'
+                    buttons={[
+                        { label: 'Close', onClick: handleClose },
+                        { label: 'Coffee', onClick: handleCoffee }
                     ]}
                 />
             </Layout>
