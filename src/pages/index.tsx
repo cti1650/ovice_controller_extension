@@ -1,86 +1,160 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { TextBox } from '@components/TextBox';
-import { Buttons } from '@components/Button';
-import { Title } from '@components/Title';
-import { Layout } from '@components/Layout';
-import { useOviceMic } from 'src/hooks/useOvice';
+import React, { useCallback, useMemo } from 'react'
+import { Layout } from '@components/Layout'
+import { useOviceMic } from 'src/hooks/useOvice'
+import { IconButton } from '@components/Button/IconButton'
+import {
+    ClosedIcon,
+    CoffeeIcon,
+    FocusIcon,
+    LockIcon,
+    LogoutIcon,
+    OffMicIcon,
+    OnMicIcon,
+    ScreenIcon,
+    UnLockIcon,
+} from '@components/Icon'
+import { PrivateStatus } from '@components/Status'
 
 const Pages = () => {
-    const [keyword, setKeyword] = useState('')
-    const [exclusionKeyword, setExclusionKeyword] = useState('')
-    const [extensionKeyword, setExtensionKeyword] = useState('')
-    const { mic, active,status, close, coffee, openspace, screenshare, changeMic } = useOviceMic()
-    const handleClick = useCallback((event) => {
-        if (chrome && chrome.tabs) {
-            changeMic(!mic)
-        }
-    },[mic,changeMic])
-    const handleMove = useCallback(async (event) => {
-        if (chrome && chrome.tabs) {
-            // let queryOptions = { active: true, currentWindow: true };
-            // let [tab] = await chrome.tabs.query(queryOptions);
-            // let tabs = await chrome.tabs.query({})
-            // tabs.forEach(tab => {
-            //     if (/https?:\/\/.*?\.ovice\.in/.test(tab.url)) {
-            //         chrome.tabs.update( tab.id, {selected:true}, function(tab){});
-            //     }
-            // })
-            active()
-        }
-    },[active])
-    const handleClose = useCallback(async (event) => {
-        if (chrome && chrome.tabs) {
-            close()
-        }
-    },[close])
-    const handleCoffee = useCallback(async (event) => {
-        if (chrome && chrome.tabs) {
-            coffee()
-        }
-    },[coffee])
-    const handleOpenSpace = useCallback(async (event) => {
-        if (chrome && chrome.tabs) {
-            openspace()
-        }
-    },[openspace])
-    const handleScreenShare = useCallback(async (event) => {
-        if (chrome && chrome.tabs) {
-            screenshare()
-        }
-    },[screenshare])
-    return useMemo(()=>{
+    const {
+        mic,
+        active,
+        status,
+        close,
+        coffee,
+        openspace,
+        screenshare,
+        changeMic,
+    } = useOviceMic()
+    const handleClick = useCallback(
+        (event) => {
+            if (chrome && chrome.tabs) {
+                changeMic(!mic)
+            }
+        },
+        [mic, changeMic]
+    )
+    const handleMove = useCallback(
+        async (event) => {
+            if (chrome && chrome.tabs) {
+                active()
+            }
+        },
+        [active]
+    )
+    const handleClose = useCallback(
+        async (event) => {
+            if (chrome && chrome.tabs) {
+                close()
+            }
+        },
+        [close]
+    )
+    const handleCoffee = useCallback(
+        async (event) => {
+            if (chrome && chrome.tabs) {
+                coffee()
+            }
+        },
+        [coffee]
+    )
+    const handleOpenSpace = useCallback(
+        async (event) => {
+            if (chrome && chrome.tabs) {
+                openspace()
+            }
+        },
+        [openspace]
+    )
+    const handleScreenShare = useCallback(
+        async (event) => {
+            if (chrome && chrome.tabs) {
+                screenshare()
+            }
+        },
+        [screenshare]
+    )
+    return useMemo(() => {
         console.log(status)
-        return (<>
-            <Layout title={'oVice Controller Extension'}>
-                <Buttons
-                    label='Mic Control'
-                    buttons={[
-                        { label: `mic ${status?.ovice_mic_on ? 'on' : 'off'}`, onClick: handleClick, on: status?.ovice_mic_on }
-                    ]}
-                />
-                <Buttons
-                    label='Screen Control'
-                    buttons={[
-                        { label: 'ScreenShare', onClick: handleScreenShare,on: status?.ovice_screenshare_on }
-                    ]}
-                />
-                <Buttons
-                    label='Tab Control'
-                    buttons={[
-                        { label: 'Focus', onClick: handleMove }
-                    ]}
-                />
-                <Buttons
-                    label='Close Control'
-                    buttons={[
-                        { label: 'Close', onClick: handleClose },
-                        { label: 'Coffee', onClick: handleCoffee },
-                        { label: 'OpenSpace', onClick: handleOpenSpace }
-                    ]}
-                />
-            </Layout>
-        </>
-    )},[status,mic,handleClick,handleMove,handleClose,handleCoffee,handleOpenSpace,handleScreenShare]);
-};
+        return (
+            <>
+                <Layout
+                    title={'oVice Controller Extension'}
+                    classNames={{ root: 'relative' }}
+                >
+                    <PrivateStatus
+                        label={status?.ovice_place_type}
+                        size='large'
+                        OnIcon={<LockIcon />}
+                        OffIcon={<UnLockIcon />}
+                        NoneIcon={<ClosedIcon />}
+                        on={status?.ovice_place_type === 'room' ? true : false}
+                        classNames={{ root: 'absolute top-[-15px] right-0' }}
+                    />
+                    <div className='flex flex-row items-end space-x-[19px]'>
+                        <IconButton
+                            title='Operate The Mic'
+                            size='large'
+                            on={status?.ovice_mic_on}
+                            disabled={!status?.ovice_has_mic}
+                            OnIcon={<OnMicIcon />}
+                            OffIcon={<OffMicIcon />}
+                            onClick={handleClick}
+                        />
+                        <IconButton
+                            title='Operate The Screen Share'
+                            size='large'
+                            on={status?.ovice_screenshare_on}
+                            disabled={!status?.ovice_has_screenshare}
+                            OnIcon={<ScreenIcon />}
+                            onClick={handleScreenShare}
+                        />
+                        <IconButton
+                            title='To The Front'
+                            size='medium'
+                            disabled={status?.ovice_place_type === 'none'}
+                            OnIcon={<FocusIcon />}
+                            onClick={handleMove}
+                        />
+                        <IconButton
+                            title='Rest'
+                            size='medium'
+                            disabled={!status?.ovice_has_coffee}
+                            OnIcon={<CoffeeIcon />}
+                            onClick={handleCoffee}
+                        />
+                        <IconButton
+                            title={
+                                status?.ovice_has_openspace
+                                    ? 'Leave The Room'
+                                    : 'Leave The oVice'
+                            }
+                            size='medium'
+                            disabled={
+                                !status?.ovice_has_openspace &&
+                                !status?.ovice_has_logout
+                            }
+                            OnIcon={<LogoutIcon />}
+                            onClick={
+                                status?.ovice_has_openspace
+                                    ? handleOpenSpace
+                                    : handleClose
+                            }
+                        />
+                    </div>
+                </Layout>
+            </>
+        )
+    }, [
+        status,
+        mic,
+        handleClick,
+        handleMove,
+        handleClose,
+        handleCoffee,
+        handleOpenSpace,
+        handleScreenShare,
+    ])
+}
 
-export default Pages;
+export default Pages

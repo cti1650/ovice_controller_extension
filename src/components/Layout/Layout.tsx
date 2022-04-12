@@ -1,21 +1,30 @@
-import { VFC } from 'react';
-import { Title } from '@components/Title';
+import { useMemo, VFC } from 'react'
+import { Title } from '@components/Title'
+import cc from 'classcat'
 
-type Props = {
-  title: string,
-  children: React.ReactNode
+type ClassNamesType = {
+    root?: string
+    content?: string
 }
 
-export const Layout: VFC<Props> = (props) => {
-  const { title, children } = props
-  return (
-    <>
-      <div className='my-1 mx-6 w-[370px]'>
-        <Title label={title} />
-        <div className='flex flex-col'>
-          {children}
-        </div>
-      </div>
-    </>
-  )
+type Props = {
+    title: string
+    children: React.ReactNode
+    classNames?: ClassNamesType
+}
+
+export const Layout: VFC<Props> = ({ title, children, classNames }) => {
+    return useMemo(
+        () => (
+            <>
+                <div className={cc(['w-[316px]', classNames?.root])}>
+                    <Title label={title} />
+                    <div className={cc(['flex flex-col', classNames?.content])}>
+                        {children}
+                    </div>
+                </div>
+            </>
+        ),
+        [title, children, classNames]
+    )
 }

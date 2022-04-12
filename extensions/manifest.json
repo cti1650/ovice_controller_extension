@@ -1,7 +1,7 @@
 {
   "name": "oVice Controller Extension",
   "description": "oVice Controller Extension",
-  "version": "0.0.101",
+  "version": "0.0.120",
   "action": {
     "default_popup": "./dist/index.html",
     "default_icon": {
