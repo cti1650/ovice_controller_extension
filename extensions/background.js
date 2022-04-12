@@ -214,6 +214,45 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
         if (checkOviceUrl(tab.url)) {
             polingOviceStatus(tab.url, tab.id)
         } else {
+            chrome.scripting.executeScript(
+                {
+                    target: { tabId: tab.id },
+                    func: () => {
+                        const items = document?.querySelectorAll(
+                            'div[name=ovice-controller-popup]'
+                        )
+                        if (items) {
+                            items.forEach((item) => {
+                                item.remove()
+                            })
+                        }
+                    },
+                },
+                () => {
+                    chrome.storage.local.get(['ovice_mic_on'], (data) => {
+                        if (data?.ovice_mic_on) {
+                            chrome.scripting.executeScript(
+                                {
+                                    target: { tabId: tab.id },
+                                    func: () => {
+                                        let ele = document.createElement('div')
+                                        ele.setAttribute(
+                                            'name',
+                                            'ovice-controller-popup'
+                                        )
+                                        ele.onClick = (event) => {
+                                            event.target.remove()
+                                        }
+                                        ele.innerHTML = 'oVice Voice Sharing'
+                                        document.body.append(ele)
+                                    },
+                                },
+                                () => {}
+                            )
+                        }
+                    })
+                }
+            )
             polingOviceStatus('', '')
         }
     })
@@ -238,6 +277,60 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             ],
             (data) => {
                 testMode && console.log('ovice_status', data)
+                chrome.tabs.query({ active: true }, (tabs) => {
+                    if (tabs) {
+                        tabs.forEach((tab) => {
+                            if (!checkOviceUrl(tab.url)) {
+                                chrome.scripting.executeScript(
+                                    {
+                                        target: { tabId: tab.id },
+                                        func: () => {
+                                            const items =
+                                                document?.querySelectorAll(
+                                                    'div[name=ovice-controller-popup]'
+                                                )
+                                            if (items) {
+                                                items.forEach((item) => {
+                                                    item.remove()
+                                                })
+                                            }
+                                        },
+                                    },
+                                    () => {
+                                        if (data?.ovice_mic_on) {
+                                            chrome.scripting.executeScript(
+                                                {
+                                                    target: { tabId: tab.id },
+                                                    func: () => {
+                                                        let ele =
+                                                            document.createElement(
+                                                                'div'
+                                                            )
+                                                        ele.setAttribute(
+                                                            'name',
+                                                            'ovice-controller-popup'
+                                                        )
+                                                        ele.onClick = (
+                                                            event
+                                                        ) => {
+                                                            event.target.remove()
+                                                        }
+                                                        ele.innerHTML =
+                                                            'oVice Voice Sharing'
+                                                        document.body.append(
+                                                            ele
+                                                        )
+                                                    },
+                                                },
+                                                () => {}
+                                            )
+                                        }
+                                    }
+                                )
+                            }
+                        })
+                    }
+                })
                 sendResponse(data)
             }
         )
