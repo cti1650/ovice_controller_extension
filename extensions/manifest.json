@@ -1,7 +1,7 @@
 {
   "name": "oVice Controller Extension",
   "description": "oVice Controller Extension",
-  "version": "0.0.158",
+  "version": "0.1.0",
   "action": {
     "default_popup": "./dist/index.html",
     "default_icon": {
@@ -14,10 +14,8 @@
     "service_worker": "background.js"
   },
   "permissions": [
-    "contextMenus",
     "activeTab",
     "scripting",
-    "notifications",
     "storage"
   ],
   "host_permissions": [
