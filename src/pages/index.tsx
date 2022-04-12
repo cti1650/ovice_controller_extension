@@ -75,7 +75,6 @@ const Pages = () => {
         [screenshare]
     )
     return useMemo(() => {
-        console.log(status)
         return (
             <>
                 <Layout

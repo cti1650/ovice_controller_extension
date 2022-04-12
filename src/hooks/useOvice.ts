@@ -5,6 +5,7 @@ export const useOviceMic = () => {
     const [mic, setMic] = useState(false)
     const [status, setStatus] = useState(null)
     const [tabId, setTabId] = useState(0)
+
     const tabCheck = useCallback(async () => {
         let tabs = await chrome.tabs.query({})
         const oviceTabs = [...tabs].filter((tab) => {
@@ -37,162 +38,7 @@ export const useOviceMic = () => {
         },
         [tabId]
     )
-    const close = useCallback(() => {
-        addScript(
-            {
-                func: () => {
-                    const ele = document.querySelector('#leave-openspace-block')
-                    if (ele) {
-                        ele['click']()
-                    }
-                },
-            },
-            () => {
-                getStatus()
-            }
-        )
-    }, [tabId, addScript])
-    const openspace = useCallback(() => {
-        addScript(
-            {
-                func: () => {
-                    const ele = document.querySelector('#leave-room-block')
-                    if (ele) {
-                        ele['click']()
-                    }
-                },
-            },
-            () => {
-                getStatus()
-            }
-        )
-    }, [tabId, addScript])
-    const active = useCallback(() => {
-        if (tabId) {
-            chrome.tabs.update(tabId, { selected: true }, function (tab) {})
-        }
-    }, [tabId, addScript])
 
-    const coffee = useCallback(() => {
-        addScript(
-            {
-                func: () => {
-                    const ele = document.querySelector('#away-block')
-                    if (ele) {
-                        ele['click']()
-                    }
-                },
-            },
-            () => {
-                getStatus()
-            }
-        )
-    }, [tabId, addScript])
-    const screenshare = useCallback(() => {
-        if (tabId) {
-            chrome.tabs.update(tabId, { selected: true }, function (tab) {})
-            addScript(
-                {
-                    func: () => {
-                        const ele = document.querySelector(
-                            '#screenshare-block > div'
-                        )
-                        if (ele) {
-                            ele['click']()
-                        } else {
-                            const eleList = document.querySelectorAll(
-                                '.dynamic-object-element'
-                            )
-                            if (eleList) {
-                                eleList.forEach((ele) => {
-                                    if (ele.querySelector('img')) {
-                                        if (
-                                            ele
-                                                .querySelector('img')
-                                                ['src'].includes('screenshare')
-                                        ) {
-                                            ele['click']()
-                                        }
-                                    }
-                                })
-                            }
-                        }
-                    },
-                },
-                () => {
-                    getStatus()
-                }
-            )
-        }
-    }, [tabId, status, addScript])
-    const changeMic = useCallback(
-        (flag: boolean) => {
-            if (mic !== flag) {
-                addScript(
-                    {
-                        func: () => {
-                            const ele =
-                                document.querySelector('#mic-block > div')
-                            if (ele) {
-                                ele['click']()
-                            }
-                        },
-                    },
-                    () => {
-                        chrome.runtime.sendMessage(
-                            'get_ovice_status',
-                            (res) => {
-                                setStatus(res)
-                            }
-                        )
-                    }
-                )
-            }
-        },
-        [mic, tabId, status, addScript]
-    )
-    // const getMic = useCallback(async () => {
-    //   addScript(
-    //     {
-    //       func: () => {
-    //         const ele = document.querySelector("#mic-block > div");
-    //         if (ele.querySelector(".bar-device-off")) {
-    //           testMode && console.log("getMic", "mic off");
-    //           return false;
-    //         }
-    //         if (ele.querySelector(".bar-device-on")) {
-    //           testMode && console.log("getMic", "mic on");
-    //           return true;
-    //         }
-    //         return null;
-    //       },
-    //     },
-    //     (result) => {
-    //       chrome.notifications.create(
-    //         "",
-    //         {
-    //           title: "mic",
-    //           message: "on",
-    //           iconUrl:
-    //             "https://feedback.ovice.io/images/dashboard/2703/ec8fdd382aff5d52b8f6efb31a5eb9dd",
-    //           type: "basic",
-    //         },
-    //         () => {}
-    //       );
-    //       if(result === null){
-    //         chrome.action.setIcon({
-    //           path: "../icons/icon_32_none.png"
-    //         });
-    //         setMic(result);
-    //         return
-    //       }
-    //       chrome.action.setIcon({
-    //         path: result ? "../icons/icon_32_on.png" : "../icons/icon_32_off.png",
-    //       });
-    //       setMic(result);
-    //     }
-    //   );
-    // }, [addScript]);
     const getStatus = useCallback(async () => {
         chrome.storage.local.get(
             [
@@ -214,15 +60,141 @@ export const useOviceMic = () => {
         )
     }, [tabId, addScript, setStatus, setTabId])
 
+    const close = useCallback(() => {
+        addScript(
+            {
+                func: () => {
+                    const ele = document?.querySelector(
+                        '#leave-openspace-block'
+                    )
+                    if (ele) {
+                        ele['click']()
+                    }
+                },
+            },
+            () => {
+                chrome.runtime.sendMessage('get_ovice_status', (res) => {
+                    console.log('res', res)
+                    getStatus()
+                })
+            }
+        )
+    }, [tabId, addScript, getStatus])
+    const openspace = useCallback(() => {
+        addScript(
+            {
+                func: () => {
+                    const ele = document?.querySelector('#leave-room-block')
+                    if (ele) {
+                        ele['click']()
+                    }
+                },
+            },
+            () => {
+                chrome.runtime.sendMessage('get_ovice_status', (res) => {
+                    console.log('res', res)
+                    getStatus()
+                })
+            }
+        )
+    }, [tabId, addScript, getStatus])
+    const active = useCallback(() => {
+        if (tabId) {
+            chrome.tabs.update(tabId, { selected: true }, function (tab) {})
+        }
+    }, [tabId, addScript])
+
+    const coffee = useCallback(() => {
+        addScript(
+            {
+                func: () => {
+                    const ele = document?.querySelector('#away-block')
+                    if (ele) {
+                        ele['click']()
+                    }
+                },
+            },
+            () => {
+                chrome.runtime.sendMessage('get_ovice_status', (res) => {
+                    console.log('res', res)
+                    getStatus()
+                })
+            }
+        )
+    }, [tabId, addScript, getStatus])
+    const screenshare = useCallback(() => {
+        if (tabId) {
+            chrome.tabs.update(tabId, { selected: true }, function (tab) {})
+            addScript(
+                {
+                    func: () => {
+                        const ele = document?.querySelector(
+                            '#screenshare-block > div'
+                        )
+                        if (ele) {
+                            ele['click']()
+                        } else {
+                            const eleList = document?.querySelectorAll(
+                                '.dynamic-object-element'
+                            )
+                            if (eleList) {
+                                eleList.forEach((ele) => {
+                                    if (ele?.querySelector('img')) {
+                                        if (
+                                            ele
+                                                ?.querySelector('img')
+                                                ['src'].includes('screenshare')
+                                        ) {
+                                            ele['click']()
+                                        }
+                                    }
+                                })
+                            }
+                        }
+                    },
+                },
+                () => {
+                    chrome.runtime.sendMessage('get_ovice_status', (res) => {
+                        console.log('res', res)
+                        getStatus()
+                    })
+                }
+            )
+        }
+    }, [tabId, status, addScript, getStatus])
+    const changeMic = useCallback(
+        (flag: boolean) => {
+            if (mic !== flag) {
+                addScript(
+                    {
+                        func: () => {
+                            const ele =
+                                document?.querySelector('#mic-block > div')
+                            if (ele) {
+                                ele['click']()
+                            }
+                        },
+                    },
+                    () => {
+                        chrome.runtime.sendMessage(
+                            'get_ovice_status',
+                            (res) => {
+                                console.log('res', res)
+                                getStatus()
+                            }
+                        )
+                    }
+                )
+            }
+        },
+        [mic, tabId, status, addScript, getStatus]
+    )
+
     useEffect(() => {
-        // tabCheck();
         getStatus()
-        // getMic();
         const tick = setInterval(() => {
-            // tabCheck();
             getStatus()
-            // getMic();
-        }, 2000)
+        }, 1000)
         return () => {
             clearInterval(tick)
         }

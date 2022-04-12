@@ -23,7 +23,7 @@ export const Title: VFC<Props> = ({ label, position, dark }) => {
             >
                 <h1
                     className={cc([
-                        'text-[14px] font-bold',
+                        'text-[18px] font-bold',
                         { 'text-gray-200': dark, 'text-gray-800': !dark },
                     ])}
                 >
