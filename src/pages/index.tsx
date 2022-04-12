@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react'
 import { Layout } from '@components/Layout'
 import { useOviceMic } from 'src/hooks/useOvice'
-import { IconButton } from '@components/Button/IconButton'
+import { IconButton } from '@components/Button'
 import {
     ClosedIcon,
     CoffeeIcon,

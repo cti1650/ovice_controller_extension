@@ -1,9 +1,5 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { TextBox } from '@components/TextBox'
-import { Buttons } from '@components/Button'
-import { Title } from '@components/Title'
+import React, { useMemo } from 'react'
 import { Layout } from '@components/Layout'
-import { useOviceMic } from 'src/hooks/useOvice'
 import { IconButton } from '@components/Button/IconButton'
 import {
     CoffeeIcon,
@@ -15,7 +11,6 @@ import {
     ScreenIcon,
     UnLockIcon,
 } from '@components/Icon'
-import { stat } from 'fs'
 import { PrivateStatus } from '@components/Status'
 
 const status = {
