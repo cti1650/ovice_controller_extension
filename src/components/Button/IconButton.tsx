@@ -1,6 +1,12 @@
 import { useCallback, useMemo, VFC } from 'react'
 import cc from 'classcat'
 
+type ClassNamesType = {
+    root?: string
+    button?: string
+    label?: string
+}
+
 type Props = {
     OnIcon?: React.ReactNode
     OffIcon?: React.ReactNode
@@ -8,7 +14,9 @@ type Props = {
     onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
     size?: 'small' | 'medium' | 'large' | undefined
     title?: string
+    tips?: string
     disabled?: boolean
+    classNames?: ClassNamesType
 }
 
 export const IconButton: VFC<Props> = ({
@@ -18,7 +26,9 @@ export const IconButton: VFC<Props> = ({
     onClick,
     size,
     title,
+    tips,
     disabled,
+    classNames,
 }) => {
     const handleClick = useCallback(
         (event) => {
@@ -29,11 +39,16 @@ export const IconButton: VFC<Props> = ({
     return useMemo(() => {
         return (
             <>
-                <div>
+                <div
+                    className={cc([
+                        'flex flex-col justify-center items-center',
+                        classNames?.root,
+                    ])}
+                >
                     <button
                         onClick={handleClick}
                         disabled={disabled}
-                        title={title}
+                        title={tips}
                         className={cc([
                             'flex justify-center items-center bg-[#F6F6F6] shadow rounded-full border border-[#E6E6E6]',
                             {
@@ -53,10 +68,21 @@ export const IconButton: VFC<Props> = ({
                                 'text-black active:bg-[#DFDFDF]':
                                     on === undefined && !disabled,
                             },
+                            classNames?.button,
                         ])}
                     >
                         {on ? OnIcon : OffIcon || OnIcon}
                     </button>
+                    {title && (
+                        <label
+                            className={cc([
+                                'flex text-center mt-[2px] text-[#B8B8B8] text-[10px]',
+                                classNames?.label,
+                            ])}
+                        >
+                            {title}
+                        </label>
+                    )}
                 </div>
             </>
         )

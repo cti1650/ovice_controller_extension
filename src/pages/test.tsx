@@ -11,7 +11,8 @@ import {
     ScreenIcon,
     UnLockIcon,
 } from '@components/Icon'
-import { PrivateStatus } from '@components/Status'
+import { PlaceStatus, PrivateStatus } from '@components/Status'
+import { useTabState } from '@components/Recoil'
 
 const status = {
     ovice_mic_on: false,
@@ -27,20 +28,104 @@ const status = {
 }
 
 const Pages = () => {
+    const {
+        setTab,
+        tabId,
+        rest,
+        leave,
+        mic,
+        setMic,
+        screenShare,
+        setScreenShare,
+        hasMic,
+        hasScreenShare,
+    } = useTabState()
     return useMemo(() => {
-        console.log(status)
+        console.log(tabId)
+        console.log(rest)
+        console.log(leave)
+        console.log(mic)
+        console.log(screenShare)
         return (
             <>
                 <Layout title={'oVice Controller Extension'}>
                     <div className='flex flex-row space-x-[19px]'>
+                        <PlaceStatus />
                         <IconButton
                             size='large'
-                            on={true}
-                            disabled={false}
+                            on={!!mic}
+                            disabled={!hasMic}
                             OnIcon={<OnMicIcon />}
                             OffIcon={<OffMicIcon />}
                             onClick={() => {
                                 console.log('click')
+                                setMic((tab) => {
+                                    return !tab
+                                })
+                            }}
+                        />
+                        <IconButton
+                            size='large'
+                            on={!!screenShare}
+                            disabled={!hasScreenShare}
+                            OnIcon={<ScreenIcon />}
+                            OffIcon={<ScreenIcon />}
+                            onClick={() => {
+                                console.log('click')
+                                setScreenShare((tab) => {
+                                    return !tab
+                                })
+                            }}
+                        />
+                        <IconButton
+                            size='large'
+                            on={true}
+                            disabled={false}
+                            OnIcon={<FocusIcon />}
+                            OffIcon={<FocusIcon />}
+                            onClick={() => {
+                                console.log('click')
+                                setTab((tab) => {
+                                    return {
+                                        ...tab,
+                                        place: '',
+                                        placeType: '',
+                                    }
+                                })
+                            }}
+                        />
+                        <IconButton
+                            size='large'
+                            on={true}
+                            disabled={false}
+                            OnIcon={<LockIcon />}
+                            OffIcon={<UnLockIcon />}
+                            onClick={() => {
+                                console.log('click')
+                                setTab((tab) => {
+                                    return {
+                                        ...tab,
+                                        place: '',
+                                        placeType: '',
+                                    }
+                                })
+                            }}
+                        />
+                        <IconButton
+                            size='large'
+                            on={true}
+                            disabled={false}
+                            OnIcon={<CoffeeIcon />}
+                            OffIcon={<CoffeeIcon />}
+                            onClick={() => {
+                                console.log('click')
+                                setTab((tab) => {
+                                    return {
+                                        ...tab,
+                                        place: '',
+                                        placeType: '',
+                                    }
+                                })
                             }}
                         />
                         <IconButton
@@ -132,7 +217,7 @@ const Pages = () => {
                         />
                         <IconButton
                             size='medium'
-                            disabled={!status.ovice_has_coffee}
+                            disabled={!rest}
                             OnIcon={<CoffeeIcon />}
                             onClick={() => {
                                 console.log('click')
@@ -140,10 +225,7 @@ const Pages = () => {
                         />
                         <IconButton
                             size='medium'
-                            disabled={
-                                !status.ovice_has_openspace &&
-                                !status.ovice_has_logout
-                            }
+                            disabled={!leave}
                             OnIcon={<LogoutIcon />}
                             onClick={() => {
                                 console.log('click')
@@ -181,7 +263,17 @@ const Pages = () => {
                 </Layout>
             </>
         )
-    }, [status])
+    }, [
+        tabId,
+        rest,
+        leave,
+        mic,
+        setMic,
+        screenShare,
+        setScreenShare,
+        hasMic,
+        hasScreenShare,
+    ])
 }
 
 export default Pages
