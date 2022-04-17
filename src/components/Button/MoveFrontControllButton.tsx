@@ -6,6 +6,9 @@ import { IconButton } from './IconButton'
 export const MoveFrontControllButton: VFC = () => {
     const { placeType } = useTabState()
     const handleClick = useCallback(() => {
+        if (!chrome?.runtime) {
+            return
+        }
         chrome?.runtime.sendMessage('action_move_to_ovice', () => {
             console.log('Front')
         })

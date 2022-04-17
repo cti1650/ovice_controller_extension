@@ -6,6 +6,9 @@ import { IconButton } from './IconButton'
 export const VolumeControllButton: VFC = () => {
     const { volume, tab, hasMic } = useTabState()
     const handleClick = useCallback(() => {
+        if (!chrome?.runtime) {
+            return
+        }
         chrome?.runtime.sendMessage('action_volume_change', () => {
             console.log('test')
         })

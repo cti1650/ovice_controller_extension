@@ -6,6 +6,9 @@ import { IconButton } from './IconButton'
 export const MicControllButton: VFC = () => {
     const { mic, setMic, hasMic } = useTabState()
     const handleClick = useCallback(() => {
+        if (!chrome?.runtime) {
+            return
+        }
         chrome?.runtime.sendMessage('action_mic_chenge', () => {
             console.log('test')
             setMic(!mic)
