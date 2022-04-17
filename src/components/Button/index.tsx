@@ -1,17 +1,7 @@
-import { IconButton } from './IconButton'
-import { LeaveControllButton } from './LeaveControllButton'
-import { MoveFrontControllButton } from './MoveFrontControllButton'
-import { MicControllButton } from './MicControllButton'
-import { RestControllButton } from './RestControllButton'
-import { ScreenShareControllButton } from './ScreenShareControllButton'
-import { VolumeControllButton } from './VolumeControllButton'
-
-export {
-    IconButton,
-    LeaveControllButton,
-    MoveFrontControllButton,
-    MicControllButton,
-    RestControllButton,
-    ScreenShareControllButton,
-    VolumeControllButton,
-}
+export * from './IconButton'
+export * from './LeaveControllButton'
+export * from './MoveFrontControllButton'
+export * from './MicControllButton'
+export * from './RestControllButton'
+export * from './ScreenShareControllButton'
+export * from './VolumeControllButton'
