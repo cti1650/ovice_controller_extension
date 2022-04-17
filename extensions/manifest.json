@@ -1,7 +1,7 @@
 {
   "name": "oVice Controller Extension",
   "description": "oVice Controller Extension",
-  "version": "0.1.1",
+  "version": "0.1.38",
   "action": {
     "default_popup": "./dist/test2.html",
     "default_icon": {
@@ -16,7 +16,8 @@
   "permissions": [
     "activeTab",
     "scripting",
-    "storage"
+    "storage",
+    "tabs"
   ],
   "host_permissions": [
     "*://*/*"

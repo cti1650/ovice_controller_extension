@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import {
     atom,
     RecoilState,
@@ -27,7 +27,7 @@ const keyList = {
     place: 'ovice_place',
     placeType: 'ovice_place_type',
     hasLogout: 'ovice_has_logout',
-    hasOpenspace: 'ovice_has_openspace',
+    hasOpenSpace: 'ovice_has_openspace',
     hasCoffee: 'ovice_has_coffee',
     hasScreenShare: 'ovice_has_screenshare',
     hasMic: 'ovice_has_mic',
@@ -174,6 +174,7 @@ export const useTabState = () => {
     const tabId = useRecoilValue(tabIdState)
     const rest = useRecoilValue(restState)
     const leave = useRecoilValue(leaveState)
+
     useEffect(() => {
         const tick = setInterval(() => {
             if (chrome.storage) {
@@ -244,7 +245,7 @@ export const useTabState = () => {
                     setTab({ ...tab, ...data })
                 }
             }
-        }, 200)
+        }, 100)
         return () => {
             clearInterval(tick)
         }

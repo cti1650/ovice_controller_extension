@@ -4,11 +4,12 @@ import { useCallback, useMemo, VFC } from 'react'
 import { IconButton } from './IconButton'
 
 export const VolumeControllButton: VFC = () => {
-    const { volume, setVolume, hasMic } = useTabState()
+    const { volume, tab, hasMic } = useTabState()
     const handleClick = useCallback(() => {
-        console.log('test')
-        setVolume(!volume)
-    }, [volume])
+        chrome?.runtime.sendMessage('action_volume_change', () => {
+            console.log('test')
+        })
+    }, [volume, tab])
     return useMemo(
         () => (
             <IconButton
@@ -22,6 +23,6 @@ export const VolumeControllButton: VFC = () => {
                 onClick={handleClick}
             />
         ),
-        [volume, hasMic, handleClick]
+        [volume, tab, hasMic, handleClick]
     )
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Layout } from '@components/Layout'
+import { WideLayout } from '@components/Layout'
 import { PlaceStatus, PrivateStatus } from '@components/Status'
 import { useTabState } from '@components/Recoil'
 import {
@@ -15,7 +15,7 @@ const Pages = () => {
     // const { tabId } = useTabState()
     return (
         <>
-            <Layout
+            <WideLayout
                 title={'oVice Controller Extension'}
                 classNames={{ root: 'relative' }}
             >
@@ -28,7 +28,7 @@ const Pages = () => {
                     <VolumeControllButton />
                     <MicControllButton />
                 </div>
-            </Layout>
+            </WideLayout>
         </>
     )
 }

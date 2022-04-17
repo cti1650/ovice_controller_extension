@@ -6,7 +6,9 @@ import { IconButton } from './IconButton'
 export const LeaveControllButton: VFC = () => {
     const { leave, placeType } = useTabState()
     const handleClick = useCallback(() => {
-        console.log('leave')
+        chrome?.runtime.sendMessage('action_leave', () => {
+            console.log('leave')
+        })
     }, [])
     return useMemo(
         () => (

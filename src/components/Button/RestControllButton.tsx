@@ -6,7 +6,9 @@ import { IconButton } from './IconButton'
 export const RestControllButton: VFC = () => {
     const { rest } = useTabState()
     const handleClick = useCallback(() => {
-        console.log('test')
+        chrome?.runtime.sendMessage('action_rest', () => {
+            console.log('test')
+        })
     }, [])
     return useMemo(
         () => (

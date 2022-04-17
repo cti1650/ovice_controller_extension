@@ -61,11 +61,11 @@ export const IconButton: VFC<Props> = ({
                             },
                             {
                                 'text-[#E4E4E4] active:bg-[#F6F6F6]': disabled,
-                                'text-[#91C699] active:bg-[#DFDFDF]':
+                                'text-[#91C699] active:bg-[#DFDFDF] hover:bg-[#EEEEEE]':
                                     on === true && !disabled,
-                                'text-[#E3342F] active:bg-[#DFDFDF]':
+                                'text-[#E3342F] active:bg-[#DFDFDF] hover:bg-[#EEEEEE]':
                                     on === false && !disabled,
-                                'text-black active:bg-[#DFDFDF]':
+                                'text-black active:bg-[#DFDFDF] hover:bg-[#EEEEEE]':
                                     on === undefined && !disabled,
                             },
                             classNames?.button,

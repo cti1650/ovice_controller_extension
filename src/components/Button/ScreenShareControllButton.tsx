@@ -6,8 +6,10 @@ import { IconButton } from './IconButton'
 export const ScreenShareControllButton: VFC = () => {
     const { screenShare, setScreenShare, hasScreenShare } = useTabState()
     const handleClick = useCallback(() => {
-        console.log('test')
-        setScreenShare(!screenShare)
+        chrome?.runtime.sendMessage('action_screenshare_chenge', () => {
+            console.log('test')
+            setScreenShare(!screenShare)
+        })
     }, [screenShare])
     return useMemo(
         () => (
