@@ -22,7 +22,7 @@ chrome.runtime.onInstalled.addListener(() => {
 })
 
 const checkOviceUrl = (url) => {
-    const reg = /https?:\/\/.*?\.ovice\.in\/(@room_id-\d+|@\d+,\d+)?/
+    const reg = /https?:\/\/.*?\.ovice\.in\/(@room_id-\d+|@\d+,\d+)+/
     return reg.exec(url)
 }
 
@@ -144,22 +144,24 @@ const polingOviceStatus = (url, tabId) => {
                     if (tabs.length === 0) {
                         chrome.storage.local.set({
                             ovice_tab_id: 0,
-                            ovice_tab_title: '',
-                            ovice_place: '',
-                            ovice_place_type: 'none',
-                            ovice_has_logout: false,
-                            ovice_has_openspace: false,
-                            ovice_has_coffee: false,
-                            ovice_has_screenshare: false,
-                            ovice_has_mic: false,
-                            ovice_screenshare_on: false,
-                            ovice_mic_on: false,
-                            ovice_volume_on: true,
-                        })
-                        chrome.action.setIcon({
-                            path: 'icons/icon_32_none.png',
                         })
                     }
+                    chrome.storage.local.set({
+                        ovice_tab_title: '',
+                        ovice_place: '',
+                        ovice_place_type: 'none',
+                        ovice_has_logout: false,
+                        ovice_has_openspace: false,
+                        ovice_has_coffee: false,
+                        ovice_has_screenshare: false,
+                        ovice_has_mic: false,
+                        ovice_screenshare_on: false,
+                        ovice_mic_on: false,
+                        ovice_volume_on: true,
+                    })
+                    chrome.action.setIcon({
+                        path: 'icons/icon_32_none.png',
+                    })
                 })
             })
         }
@@ -171,31 +173,22 @@ const polingOviceStatus = (url, tabId) => {
             if (oviceTabs.length > 0) {
                 polingOviceStatus(oviceTabs[0].url, oviceTabs[0].id)
             } else {
-                chrome.storage.local.get(['ovice_tab_id'], (result) => {
-                    chrome.tabs.query(
-                        { tabId: result.ovice_tab_id },
-                        (tabs) => {
-                            if (tabs.length === 0) {
-                                chrome.storage.local.set({
-                                    ovice_tab_id: 0,
-                                    ovice_tab_title: '',
-                                    ovice_place: '',
-                                    ovice_place_type: 'none',
-                                    ovice_has_logout: false,
-                                    ovice_has_openspace: false,
-                                    ovice_has_coffee: false,
-                                    ovice_has_screenshare: false,
-                                    ovice_has_mic: false,
-                                    ovice_screenshare_on: false,
-                                    ovice_mic_on: false,
-                                    ovice_volume_on: true,
-                                })
-                                chrome.action.setIcon({
-                                    path: 'icons/icon_32_none.png',
-                                })
-                            }
-                        }
-                    )
+                chrome.storage.local.set({
+                    ovice_tab_id: 0,
+                    ovice_tab_title: '',
+                    ovice_place: '',
+                    ovice_place_type: 'none',
+                    ovice_has_logout: false,
+                    ovice_has_openspace: false,
+                    ovice_has_coffee: false,
+                    ovice_has_screenshare: false,
+                    ovice_has_mic: false,
+                    ovice_screenshare_on: false,
+                    ovice_mic_on: false,
+                    ovice_volume_on: true,
+                })
+                chrome.action.setIcon({
+                    path: 'icons/icon_32_none.png',
                 })
             }
         })
@@ -234,12 +227,16 @@ const tick = setInterval(() => {
 }, 4000)
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    if (checkOviceUrl(tab.url)) {
-        testMode && console.log('changeInfo', changeInfo)
-        if (changeInfo?.status === 'complete' || changeInfo?.favIconUrl) {
-            testMode && console.log('tab url', tab.url)
+    if (~tab.url.indexOf('ovice.in')) {
+        if (checkOviceUrl(tab.url)) {
             testMode && console.log('changeInfo', changeInfo)
-            polingOviceStatus(tab.url, tabId)
+            if (changeInfo?.status === 'complete' || changeInfo?.favIconUrl) {
+                testMode && console.log('tab url', tab.url)
+                testMode && console.log('changeInfo', changeInfo)
+                polingOviceStatus(tab.url, tabId)
+            }
+        } else {
+            polingOviceStatus('', 0)
         }
     }
 })
