@@ -10,7 +10,11 @@ export const MoveFrontControllButton: VFC = () => {
             return
         }
         chrome?.runtime.sendMessage('action_move_to_ovice', () => {
-            console.log('Front')
+            if (chrome.runtime.lastError) {
+                // console.error('error:', chrome.runtime.lastError.message)
+                return
+            }
+            // console.log('Front')
         })
     }, [])
     return useMemo(

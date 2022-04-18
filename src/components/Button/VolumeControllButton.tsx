@@ -10,7 +10,11 @@ export const VolumeControllButton: VFC = () => {
             return
         }
         chrome?.runtime.sendMessage('action_volume_change', () => {
-            console.log('test')
+            if (chrome.runtime.lastError) {
+                // console.error('error:', chrome.runtime.lastError.message)
+                return
+            }
+            // console.log('test')
         })
     }, [volume, tab])
     return useMemo(

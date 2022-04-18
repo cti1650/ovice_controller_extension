@@ -1,4 +1,2 @@
-import { Layout } from './Layout'
-import { WideLayout } from './WideLayout'
-
-export { Layout, WideLayout }
+export * from './Layout'
+export * from './WideLayout'

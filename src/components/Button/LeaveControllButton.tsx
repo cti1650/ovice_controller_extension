@@ -10,7 +10,11 @@ export const LeaveControllButton: VFC = () => {
             return
         }
         chrome?.runtime.sendMessage('action_leave', () => {
-            console.log('leave')
+            if (chrome.runtime.lastError) {
+                // console.error('error:', chrome.runtime.lastError.message)
+                return
+            }
+            // console.log('leave')
         })
     }, [])
     return useMemo(

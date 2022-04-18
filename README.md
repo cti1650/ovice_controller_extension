@@ -1,13 +1,51 @@
 # はじめに
 
-このリポジトリは、Google Chrome の拡張を Next.js で書くためのテンプレートリポジトリになります。
+このリポジトリは、バーチャルオフィス oVice ユーザーとしてあるといいなと感じた機能を  
+手軽に使えるようにChrome拡張機能化するために作成したリポジトリです。
 
-# 使い方
+https://ovice.in/ja/
+
+## 実装している機能
+
+- oViceタブを別タブから操作
+  - マイク切替（mic）
+  - 音声ミュート切替(volume)
+  - 画面共有切替(ScreenShare)
+  - oViceタブを前面に表示
+  - 離席
+  - 会議室、oViceを退室
+
+- oViceタブの状態を表示
+  - マイク ON, OFF
+  - ミュート ON, OFF
+  - 画面共有 ON, OFF
+  - 所在確認　ログアウト, パブリックスペース, 会議室
+
+- 拡張機能アイコンに状態を表示
+  - マイク ON, OFF
+
+## 使用方法
+
+- 拡張機能をインストール  
+  https://chrome.google.com/webstore/detail/ovice-controller-extensio/bebojhcmkpcojcalbadohngjiacdcdde?hl=ja&authuser=0  
+
+- 拡張機能の表示・非表示を切り替え  
+![スクリーンショット 2022-04-18 2 09 15](https://user-images.githubusercontent.com/15701307/163725085-1a18b160-6858-47d0-99b7-21d76bbf7abc.png)
+
+- 拡張機能のアクションボタンを押下  
+- 任意のボタンで動作を実行  
+![スクリーンショット 2022-04-18 2 10 34](https://user-images.githubusercontent.com/15701307/163725121-df885c5d-a0d6-4057-8b64-f37d1700d2fc.png)
+
+
+
+
+
+# ローカル環境構築
 
 ## 1. リポジトリを clone する
 
 ```bash
-git clone https://github.com/cti1650/github-search-extension.git
+git clone https://github.com/cti1650/ovice_controller_extension.git
 ```
 
 ## 2. ライブラリをインストールする
