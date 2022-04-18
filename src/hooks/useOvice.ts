@@ -74,6 +74,13 @@ export const useOviceMic = () => {
             },
             () => {
                 chrome.runtime.sendMessage('get_ovice_status', (res) => {
+                    if (chrome.runtime.lastError) {
+                        console.error(
+                            'error:',
+                            chrome.runtime.lastError.message
+                        )
+                        return
+                    }
                     console.log('res', res)
                     getStatus()
                 })
@@ -92,6 +99,13 @@ export const useOviceMic = () => {
             },
             () => {
                 chrome.runtime.sendMessage('get_ovice_status', (res) => {
+                    if (chrome.runtime.lastError) {
+                        console.error(
+                            'error:',
+                            chrome.runtime.lastError.message
+                        )
+                        return
+                    }
                     console.log('res', res)
                     getStatus()
                 })
@@ -116,6 +130,13 @@ export const useOviceMic = () => {
             },
             () => {
                 chrome.runtime.sendMessage('get_ovice_status', (res) => {
+                    if (chrome.runtime.lastError) {
+                        console.error(
+                            'error:',
+                            chrome.runtime.lastError.message
+                        )
+                        return
+                    }
                     console.log('res', res)
                     getStatus()
                 })
@@ -155,6 +176,13 @@ export const useOviceMic = () => {
                 },
                 () => {
                     chrome.runtime.sendMessage('get_ovice_status', (res) => {
+                        if (chrome.runtime.lastError) {
+                            console.error(
+                                'error:',
+                                chrome.runtime.lastError.message
+                            )
+                            return
+                        }
                         console.log('res', res)
                         getStatus()
                     })
@@ -179,6 +207,13 @@ export const useOviceMic = () => {
                         chrome.runtime.sendMessage(
                             'get_ovice_status',
                             (res) => {
+                                if (chrome.runtime.lastError) {
+                                    console.error(
+                                        'error:',
+                                        chrome.runtime.lastError.message
+                                    )
+                                    return
+                                }
                                 console.log('res', res)
                                 getStatus()
                             }

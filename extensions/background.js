@@ -116,10 +116,11 @@ const polingOviceStatus = (url, tabId) => {
                 },
                 () => {
                     if (chrome.runtime.lastError) {
-                        console.error(
-                            'error:',
-                            chrome.runtime.lastError.message
-                        )
+                        testMode &&
+                            console.error(
+                                'error:',
+                                chrome.runtime.lastError.message
+                            )
                         return
                     }
                     chrome.storage.local.get(['ovice_mic_on'], (result) => {
@@ -215,7 +216,7 @@ const tick = setInterval(() => {
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     if (checkOviceUrl(tab.url)) {
-        console.log('changeInfo', changeInfo)
+        testMode && console.log('changeInfo', changeInfo)
         if (changeInfo?.status === 'complete' || changeInfo?.favIconUrl) {
             testMode && console.log('tab url', tab.url)
             testMode && console.log('changeInfo', changeInfo)
@@ -367,16 +368,18 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                     },
                     () => {
                         if (chrome.runtime.lastError) {
-                            console.error(
-                                'error:',
-                                chrome.runtime.lastError.message
-                            )
+                            testMode &&
+                                console.error(
+                                    'error:',
+                                    chrome.runtime.lastError.message
+                                )
                             return
                         }
                         chrome.runtime.sendMessage(
                             'get_ovice_status',
                             (res) => {
-                                console.log('res', res)
+                                testMode && console.log('res', res)
+                                sendResponse({})
                             }
                         )
                     }
@@ -429,16 +432,18 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                             },
                             () => {
                                 if (chrome.runtime.lastError) {
-                                    console.error(
-                                        'error:',
-                                        chrome.runtime.lastError.message
-                                    )
+                                    testMode &&
+                                        console.error(
+                                            'error:',
+                                            chrome.runtime.lastError.message
+                                        )
                                     return
                                 }
                                 chrome.runtime.sendMessage(
                                     'get_ovice_status',
                                     (res) => {
-                                        console.log('res', res)
+                                        testMode && console.log('res', res)
+                                        sendResponse({})
                                     }
                                 )
                             }
@@ -452,7 +457,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                 chrome.tabs.update(
                     Number(data.ovice_tab_id),
                     { selected: true },
-                    function (tab) {}
+                    function (tab) {
+                        sendResponse({})
+                    }
                 )
             })
             break
@@ -460,18 +467,19 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             chrome.storage.local.get(
                 ['ovice_tab_id', 'ovice_volume_on'],
                 (data) => {
-                    console.log(Number(data.ovice_tab_id))
-                    console.log(data.ovice_volume_on)
+                    testMode && console.log(Number(data.ovice_tab_id))
+                    testMode && console.log(data.ovice_volume_on)
                     chrome.tabs.update(
                         Number(data.ovice_tab_id),
                         { muted: data.ovice_volume_on },
                         function (tab) {
-                            console.log(tab)
+                            testMode && console.log(tab)
                             chrome.storage.local.set({
                                 ovice_volume_on: !tab.mutedInfo.muted,
                             })
                         }
                     )
+                    sendResponse({})
                 }
             )
             break
@@ -489,16 +497,25 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                     },
                     () => {
                         if (chrome.runtime.lastError) {
-                            console.error(
-                                'error:',
-                                chrome.runtime.lastError.message
-                            )
+                            testMode &&
+                                console.error(
+                                    'error:',
+                                    chrome.runtime.lastError.message
+                                )
                             return
                         }
                         chrome.runtime.sendMessage(
                             'get_ovice_status',
                             (res) => {
-                                console.log('res', res)
+                                if (chrome.runtime.lastError) {
+                                    testMode &&
+                                        console.error(
+                                            'error:',
+                                            chrome.runtime.lastError.message
+                                        )
+                                    return
+                                }
+                                testMode && console.log('res', res)
                                 chrome.tabs.update(
                                     Number(data.ovice_tab_id),
                                     { selected: true },
@@ -506,6 +523,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                                         getStatus()
                                     }
                                 )
+                                sendResponse({})
                             }
                         )
                     }
@@ -533,15 +551,24 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                     },
                     () => {
                         if (chrome.runtime.lastError) {
-                            console.error(
-                                'error:',
-                                chrome.runtime.lastError.message
-                            )
+                            testMode &&
+                                console.error(
+                                    'error:',
+                                    chrome.runtime.lastError.message
+                                )
                             return
                         }
                         chrome.runtime.sendMessage(
                             'get_ovice_status',
                             (res) => {
+                                if (chrome.runtime.lastError) {
+                                    testMode &&
+                                        console.error(
+                                            'error:',
+                                            chrome.runtime.lastError.message
+                                        )
+                                    return
+                                }
                                 chrome.tabs.update(
                                     Number(data.ovice_tab_id),
                                     { selected: true },
@@ -557,6 +584,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             })
             break
         default:
+            sendResponse({})
     }
+
     return true
 })

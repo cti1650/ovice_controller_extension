@@ -10,7 +10,11 @@ export const ScreenShareControllButton: VFC = () => {
             return
         }
         chrome?.runtime.sendMessage('action_screenshare_chenge', () => {
-            console.log('test')
+            if (chrome.runtime.lastError) {
+                // console.error('error:', chrome.runtime.lastError.message)
+                return
+            }
+            // console.log('test')
             setScreenShare(!screenShare)
         })
     }, [screenShare])
