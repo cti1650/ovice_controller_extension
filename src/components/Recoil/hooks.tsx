@@ -11,6 +11,7 @@ import {
     placeState,
     hasScreenShareState,
     tabIdState,
+    tabTitleState,
     restState,
     leaveState,
 } from '@components/Recoil'
@@ -31,6 +32,7 @@ export const useTabState = () => {
     const hasMic = useRecoilValue(hasMicState)
     const hasScreenShare = useRecoilValue(hasScreenShareState)
     const tabId = useRecoilValue(tabIdState)
+    const tabTitle = useRecoilValue(tabTitleState)
     const rest = useRecoilValue(restState)
     const leave = useRecoilValue(leaveState)
 
@@ -61,6 +63,7 @@ export const useTabState = () => {
             screenShare,
             setScreenShare,
             tabId,
+            tabTitle,
             placeType,
             place,
             rest,
@@ -74,6 +77,7 @@ export const useTabState = () => {
         volume,
         screenShare,
         tabId,
+        tabTitle,
         placeType,
         place,
         rest,

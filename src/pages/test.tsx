@@ -18,6 +18,7 @@ const status = {
     ovice_mic_on: false,
     ovice_screenshare_on: false,
     ovice_tab_id: false,
+    ovice_tab_title: '',
     ovice_has_mic: true,
     ovice_has_screenshare: true,
     ovice_has_logout: true,

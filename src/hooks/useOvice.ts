@@ -43,6 +43,7 @@ export const useOviceMic = () => {
         chrome.storage.local.get(
             [
                 'ovice_tab_id',
+                'ovice_tab_title',
                 'ovice_place',
                 'ovice_place_type',
                 'ovice_has_logout',

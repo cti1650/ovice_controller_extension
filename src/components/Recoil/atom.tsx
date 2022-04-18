@@ -2,6 +2,7 @@ import { atom, RecoilState } from 'recoil'
 
 export type TabState = {
     tabId: number
+    tabTitle?: string
     place?: string
     placeType?: string
     hasLogout?: boolean | undefined
@@ -16,6 +17,7 @@ export type TabState = {
 
 export const keyList = {
     tabId: 'ovice_tab_id',
+    tabTitle: 'ovice_tab_title',
     place: 'ovice_place',
     placeType: 'ovice_place_type',
     hasLogout: 'ovice_has_logout',
@@ -33,6 +35,7 @@ export const tabState: RecoilState<TabState> = atom({
     key: 'tabState',
     default: {
         tabId: 0,
+        tabTitle: '',
         place: '',
         placeType: '',
         hasLogout: undefined,
