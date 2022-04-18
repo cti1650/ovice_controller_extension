@@ -10,6 +10,7 @@ import {
     LeaveControllButton,
     MoveFrontControllButton,
 } from '@components/Button'
+import { TabTitleStatus } from '@components/Status/TabTitleStatus'
 
 const Pages = () => {
     // const { tabId } = useTabState()
@@ -21,13 +22,14 @@ const Pages = () => {
             >
                 <PlaceStatus />
                 <div className='flex flex-row items-end space-x-[19px]'>
-                    <LeaveControllButton />
-                    <RestControllButton />
-                    <MoveFrontControllButton />
-                    <ScreenShareControllButton />
-                    <VolumeControllButton />
                     <MicControllButton />
+                    <VolumeControllButton />
+                    <ScreenShareControllButton />
+                    <MoveFrontControllButton />
+                    <RestControllButton />
+                    <LeaveControllButton />
                 </div>
+                <TabTitleStatus />
             </WideLayout>
         </>
     )

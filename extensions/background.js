@@ -3,6 +3,7 @@ const testMode = false
 chrome.runtime.onInstalled.addListener(() => {
     chrome.storage.local.set({
         ovice_tab_id: 0,
+        ovice_tab_title: '',
         ovice_place: '',
         ovice_place_type: 'none',
         ovice_has_logout: false,
@@ -45,6 +46,7 @@ const addScript = (funcOption = {}, callback) => {
 
 const flagChecker = () => {
     chrome.storage.local.set({
+        ovice_tab_title: document.title,
         ovice_has_logout: !!document?.querySelector('#leave-openspace-block'),
         ovice_has_openspace: !!document?.querySelector('#leave-room-block'),
         ovice_has_coffee: !!document?.querySelector('#away-block'),
@@ -137,21 +139,28 @@ const polingOviceStatus = (url, tabId) => {
                 }
             )
         } else {
-            chrome.storage.local.set({
-                ovice_tab_id: 0,
-                ovice_place: '',
-                ovice_place_type: 'none',
-                ovice_has_logout: false,
-                ovice_has_openspace: false,
-                ovice_has_coffee: false,
-                ovice_has_screenshare: false,
-                ovice_has_mic: false,
-                ovice_screenshare_on: false,
-                ovice_mic_on: false,
-                ovice_volume_on: true,
-            })
-            chrome.action.setIcon({
-                path: 'icons/icon_32_none.png',
+            chrome.storage.local.get(['ovice_tab_id'], (result) => {
+                chrome.tabs.query({ tabId: result.ovice_tab_id }, (tabs) => {
+                    if (tabs.length === 0) {
+                        chrome.storage.local.set({
+                            ovice_tab_id: 0,
+                            ovice_tab_title: '',
+                            ovice_place: '',
+                            ovice_place_type: 'none',
+                            ovice_has_logout: false,
+                            ovice_has_openspace: false,
+                            ovice_has_coffee: false,
+                            ovice_has_screenshare: false,
+                            ovice_has_mic: false,
+                            ovice_screenshare_on: false,
+                            ovice_mic_on: false,
+                            ovice_volume_on: true,
+                        })
+                        chrome.action.setIcon({
+                            path: 'icons/icon_32_none.png',
+                        })
+                    }
+                })
             })
         }
     } else {
@@ -162,21 +171,31 @@ const polingOviceStatus = (url, tabId) => {
             if (oviceTabs.length > 0) {
                 polingOviceStatus(oviceTabs[0].url, oviceTabs[0].id)
             } else {
-                chrome.storage.local.set({
-                    ovice_tab_id: 0,
-                    ovice_place: '',
-                    ovice_place_type: 'none',
-                    ovice_has_logout: false,
-                    ovice_has_openspace: false,
-                    ovice_has_coffee: false,
-                    ovice_has_screenshare: false,
-                    ovice_has_mic: false,
-                    ovice_screenshare_on: false,
-                    ovice_mic_on: false,
-                    ovice_volume_on: true,
-                })
-                chrome.action.setIcon({
-                    path: 'icons/icon_32_none.png',
+                chrome.storage.local.get(['ovice_tab_id'], (result) => {
+                    chrome.tabs.query(
+                        { tabId: result.ovice_tab_id },
+                        (tabs) => {
+                            if (tabs.length === 0) {
+                                chrome.storage.local.set({
+                                    ovice_tab_id: 0,
+                                    ovice_tab_title: '',
+                                    ovice_place: '',
+                                    ovice_place_type: 'none',
+                                    ovice_has_logout: false,
+                                    ovice_has_openspace: false,
+                                    ovice_has_coffee: false,
+                                    ovice_has_screenshare: false,
+                                    ovice_has_mic: false,
+                                    ovice_screenshare_on: false,
+                                    ovice_mic_on: false,
+                                    ovice_volume_on: true,
+                                })
+                                chrome.action.setIcon({
+                                    path: 'icons/icon_32_none.png',
+                                })
+                            }
+                        }
+                    )
                 })
             }
         })

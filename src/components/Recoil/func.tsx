@@ -52,6 +52,7 @@ export const getStorageData = async (tabState: TabState) => {
                         }
                     }
                     break
+                case 'tabTitle':
                 case 'place':
                 case 'placeType':
                     // ローカルストレージに格納した値が文字列の場合の更新処理

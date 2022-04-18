@@ -13,6 +13,15 @@ export const tabIdState: RecoilState<number> = selector({
     },
 })
 
+// oViceを開いているタブのタブ名を保持するSelector
+export const tabTitleState: RecoilValueReadOnly<string> = selector({
+    key: 'tabTitleState',
+    get: ({ get }) => {
+        const tabData = get(tabState)
+        return tabData.tabTitle || ''
+    },
+})
+
 // oViceを開いているタブのマイクの状態を保持するSelector
 export const micState: RecoilState<boolean | undefined> = selector({
     key: 'micState',
