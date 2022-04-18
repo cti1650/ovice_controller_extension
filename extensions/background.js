@@ -115,6 +115,14 @@ const polingOviceStatus = (url, tabId) => {
                     func: flagChecker,
                 },
                 () => {
+                    if (chrome.runtime.lastError) {
+                        testMode &&
+                            console.error(
+                                'error:',
+                                chrome.runtime.lastError.message
+                            )
+                        return
+                    }
                     chrome.storage.local.get(['ovice_mic_on'], (result) => {
                         if (result.ovice_mic_on) {
                             chrome.action.setIcon({
@@ -208,7 +216,7 @@ const tick = setInterval(() => {
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     if (checkOviceUrl(tab.url)) {
-        console.log('changeInfo', changeInfo)
+        testMode && console.log('changeInfo', changeInfo)
         if (changeInfo?.status === 'complete' || changeInfo?.favIconUrl) {
             testMode && console.log('tab url', tab.url)
             testMode && console.log('changeInfo', changeInfo)
@@ -275,45 +283,46 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
         if (checkOviceUrl(tab.url)) {
             polingOviceStatus(tab.url, tab.id)
         } else {
-            chrome.scripting.executeScript(
-                {
-                    target: { tabId: tab.id },
-                    func: () => {
-                        const items = document?.querySelectorAll(
-                            'div[name=ovice-controller-popup]'
-                        )
-                        if (items) {
-                            items.forEach((item) => {
-                                item.remove()
-                            })
-                        }
-                    },
-                },
-                () => {
-                    chrome.storage.local.get(['ovice_mic_on'], (data) => {
-                        if (data?.ovice_mic_on) {
-                            chrome.scripting.executeScript(
-                                {
-                                    target: { tabId: tab.id },
-                                    func: () => {
-                                        let ele = document.createElement('div')
-                                        ele.setAttribute(
-                                            'name',
-                                            'ovice-controller-popup'
-                                        )
-                                        ele.onClick = (event) => {
-                                            event.target.remove()
-                                        }
-                                        ele.innerHTML = 'oVice Voice Sharing'
-                                        document.body.append(ele)
-                                    },
-                                },
-                                () => {}
-                            )
-                        }
-                    })
-                }
-            )
+            // TODO: 動作が不安定なため、一旦コメントアウト
+            // chrome.scripting.executeScript(
+            //     {
+            //         target: { tabId: tab.id },
+            //         func: () => {
+            //             const items = document?.querySelectorAll(
+            //                 'div[name=ovice-controller-popup]'
+            //             )
+            //             if (items) {
+            //                 items.forEach((item) => {
+            //                     item.remove()
+            //                 })
+            //             }
+            //         },
+            //     },
+            //     () => {
+            //         chrome.storage.local.get(['ovice_mic_on'], (data) => {
+            //             if (data?.ovice_mic_on) {
+            //                 chrome.scripting.executeScript(
+            //                     {
+            //                         target: { tabId: tab.id },
+            //                         func: () => {
+            //                             let ele = document.createElement('div')
+            //                             ele.setAttribute(
+            //                                 'name',
+            //                                 'ovice-controller-popup'
+            //                             )
+            //                             ele.onClick = (event) => {
+            //                                 event.target.remove()
+            //                             }
+            //                             ele.innerHTML = 'oVice Voice Sharing'
+            //                             document.body.append(ele)
+            //                         },
+            //                     },
+            //                     () => {}
+            //                 )
+            //             }
+            //         })
+            //     }
+            // )
             polingOviceStatus('', '')
         }
     })
@@ -358,10 +367,19 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                         },
                     },
                     () => {
+                        if (chrome.runtime.lastError) {
+                            testMode &&
+                                console.error(
+                                    'error:',
+                                    chrome.runtime.lastError.message
+                                )
+                            return
+                        }
                         chrome.runtime.sendMessage(
                             'get_ovice_status',
                             (res) => {
-                                console.log('res', res)
+                                testMode && console.log('res', res)
+                                sendResponse({})
                             }
                         )
                     }
@@ -393,7 +411,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                                                 if (ele?.querySelector('img')) {
                                                     if (
                                                         [
-                                                            ...ele?.querySelector(
+                                                            ...ele?.querySelectorAll(
                                                                 'img'
                                                             ),
                                                         ].filter((item) =>
@@ -413,10 +431,19 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                                 },
                             },
                             () => {
+                                if (chrome.runtime.lastError) {
+                                    testMode &&
+                                        console.error(
+                                            'error:',
+                                            chrome.runtime.lastError.message
+                                        )
+                                    return
+                                }
                                 chrome.runtime.sendMessage(
                                     'get_ovice_status',
                                     (res) => {
-                                        console.log('res', res)
+                                        testMode && console.log('res', res)
+                                        sendResponse({})
                                     }
                                 )
                             }
@@ -430,7 +457,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                 chrome.tabs.update(
                     Number(data.ovice_tab_id),
                     { selected: true },
-                    function (tab) {}
+                    function (tab) {
+                        sendResponse({})
+                    }
                 )
             })
             break
@@ -438,18 +467,19 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             chrome.storage.local.get(
                 ['ovice_tab_id', 'ovice_volume_on'],
                 (data) => {
-                    console.log(Number(data.ovice_tab_id))
-                    console.log(data.ovice_volume_on)
+                    testMode && console.log(Number(data.ovice_tab_id))
+                    testMode && console.log(data.ovice_volume_on)
                     chrome.tabs.update(
                         Number(data.ovice_tab_id),
                         { muted: data.ovice_volume_on },
                         function (tab) {
-                            console.log(tab)
+                            testMode && console.log(tab)
                             chrome.storage.local.set({
                                 ovice_volume_on: !tab.mutedInfo.muted,
                             })
                         }
                     )
+                    sendResponse({})
                 }
             )
             break
@@ -466,10 +496,26 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                         },
                     },
                     () => {
+                        if (chrome.runtime.lastError) {
+                            testMode &&
+                                console.error(
+                                    'error:',
+                                    chrome.runtime.lastError.message
+                                )
+                            return
+                        }
                         chrome.runtime.sendMessage(
                             'get_ovice_status',
                             (res) => {
-                                console.log('res', res)
+                                if (chrome.runtime.lastError) {
+                                    testMode &&
+                                        console.error(
+                                            'error:',
+                                            chrome.runtime.lastError.message
+                                        )
+                                    return
+                                }
+                                testMode && console.log('res', res)
                                 chrome.tabs.update(
                                     Number(data.ovice_tab_id),
                                     { selected: true },
@@ -477,6 +523,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                                         getStatus()
                                     }
                                 )
+                                sendResponse({})
                             }
                         )
                     }
@@ -503,9 +550,25 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                         },
                     },
                     () => {
+                        if (chrome.runtime.lastError) {
+                            testMode &&
+                                console.error(
+                                    'error:',
+                                    chrome.runtime.lastError.message
+                                )
+                            return
+                        }
                         chrome.runtime.sendMessage(
                             'get_ovice_status',
                             (res) => {
+                                if (chrome.runtime.lastError) {
+                                    testMode &&
+                                        console.error(
+                                            'error:',
+                                            chrome.runtime.lastError.message
+                                        )
+                                    return
+                                }
                                 chrome.tabs.update(
                                     Number(data.ovice_tab_id),
                                     { selected: true },
@@ -521,6 +584,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             })
             break
         default:
+            sendResponse({})
     }
+
     return true
 })

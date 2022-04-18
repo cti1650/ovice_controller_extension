@@ -10,7 +10,11 @@ export const MicControllButton: VFC = () => {
             return
         }
         chrome?.runtime.sendMessage('action_mic_chenge', () => {
-            console.log('test')
+            if (chrome.runtime.lastError) {
+                // console.error('error:', chrome.runtime.lastError.message)
+                return
+            }
+            // console.log('test')
             setMic(!mic)
         })
     }, [mic])

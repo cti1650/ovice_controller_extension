@@ -1,4 +1,2 @@
-import { PrivateStatus } from './PrivateStatus'
-import { PlaceStatus } from './PlaceStatus'
-
-export { PrivateStatus, PlaceStatus }
+export * from './PrivateStatus'
+export * from './PlaceStatus'

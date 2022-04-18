@@ -10,7 +10,11 @@ export const RestControllButton: VFC = () => {
             return
         }
         chrome?.runtime.sendMessage('action_rest', () => {
-            console.log('test')
+            if (chrome.runtime.lastError) {
+                // console.error('error:', chrome.runtime.lastError.message)
+                return
+            }
+            // console.log('test')
         })
     }, [])
     return useMemo(
