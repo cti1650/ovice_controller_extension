@@ -1,40 +1,53 @@
 {
-    "name": "oVice Controller Extension",
-    "description": "oVice Controller Extension",
-    "version": "0.1.40",
-    "action": {
-        "default_popup": "./dist/test2.html",
-        "default_icon": {
-            "16": "icons/icon_16.png",
-            "24": "icons/icon_24.png",
-            "32": "icons/icon_32.png"
-        }
-    },
-    "background": {
-        "service_worker": "background.js"
-    },
-    "commands": {
-        "_execute_action": {
-            "suggested_key": {
-                "windows": "Ctrl+Shift+O",
-                "mac": "Command+Shift+O",
-                "chromeos": "Ctrl+Shift+O",
-                "linux": "Ctrl+Shift+O"
-            }
-        }
-    },
-    "permissions": ["activeTab", "scripting", "storage", "tabs", "commands"],
-    "host_permissions": ["*://*/*"],
-    "content_scripts": [
-        {
-            "matches": ["http://*/*", "https://*/*"],
-            "css": ["css/style.css"]
-        }
-    ],
-    "manifest_version": 3,
-    "icons": {
-        "16": "icons/icon_16.png",
-        "48": "icons/icon_48.png",
-        "128": "icons/icon_128.png"
+  "name": "oVice Controller Extension",
+  "description": "oVice Controller Extension",
+  "version": "0.1.64",
+  "action": {
+    "default_popup": "./dist/test2.html",
+    "default_icon": {
+      "16": "icons/icon_16.png",
+      "24": "icons/icon_24.png",
+      "32": "icons/icon_32.png"
     }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "windows": "Ctrl+Shift+O",
+        "mac": "Command+Shift+O",
+        "chromeos": "Ctrl+Shift+O",
+        "linux": "Ctrl+Shift+O"
+      }
+    }
+  },
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "tabs",
+    "commands"
+  ],
+  "host_permissions": [
+    "*://*/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "css": [
+        "css/style.css"
+      ]
+    }
+  ],
+  "manifest_version": 3,
+  "icons": {
+    "16": "icons/icon_16.png",
+    "48": "icons/icon_48.png",
+    "128": "icons/icon_128.png"
+  }
 }
