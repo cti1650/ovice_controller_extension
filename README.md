@@ -1,9 +1,11 @@
 # はじめに
 
-このリポジトリは、バーチャルオフィス oVice ユーザーとしてあるといいなと感じた機能を  
+このリポジトリは、[バーチャルオフィス oVice](https://ovice.in/ja/) ユーザーとしてあるといいなと感じた機能を  
 手軽に使えるようにChrome拡張機能化するために作成したリポジトリです。
 
-https://ovice.in/ja/
+[Chrome拡張機能インストールページ](https://chrome.google.com/webstore/detail/ovice-controller-extensio/bebojhcmkpcojcalbadohngjiacdcdde?hl=ja&authuser=0)  
+![oVice_controller_extension](https://user-images.githubusercontent.com/15701307/164227814-36149a49-9f6e-49be-9c14-9546f454ba7c.gif)
+
 
 ## 実装している機能
 
