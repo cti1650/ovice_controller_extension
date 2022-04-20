@@ -39,6 +39,12 @@
 ![スクリーンショット 2022-04-18 2 10 34](https://user-images.githubusercontent.com/15701307/163725121-df885c5d-a0d6-4057-8b64-f37d1700d2fc.png)
 
 
+## デザイン
+
+### Figmaデザインカンプ
+
+https://www.figma.com/file/NxcSkKSOat93POTMj6GS0V/OVCE?node-id=0%3A1
+
 
 
 
