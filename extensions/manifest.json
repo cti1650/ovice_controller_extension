@@ -1,7 +1,7 @@
 {
   "name": "oVice Controller Extension",
   "description": "oVice Controller Extension",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "action": {
     "default_popup": "./dist/index.html",
     "default_icon": {
@@ -22,12 +22,43 @@
       "description": "oVice Controllerをポップアップで開く",
       "global": true
     },
+    "action_mic_change": {
+      "suggested_key": "",
+      "description": "oViceのマイクのON/OFFを切り替える",
+      "global": true
+    },
+    "action_move_to_ovice": {
+      "suggested_key": "",
+      "description": "oViceのウィンドウに移動する",
+      "global": true
+    },
+    "action_screenshare_change": {
+      "suggested_key": "",
+      "description": "oViceのスクリーンシェアのON/OFFを切り替える",
+      "global": true
+    },
+    "action_volume_change": {
+      "suggested_key": "",
+      "description": "oViceの音声のON/OFFを切り替える",
+      "global": true
+    },
+    "action_rest": {
+      "suggested_key": "",
+      "description": "oViceを離席する",
+      "global": true
+    },
+    "action_leave": {
+      "suggested_key": "",
+      "description": "oViceを退室する",
+      "global": true
+    },
     "_execute_action": {
       "suggested_key": {
         "default": "Alt+Shift+O",
         "mac": "Alt+Shift+O"
       },
-      "global": true
+      "description": "oVice Controllerをアクションウィンドウで開く",
+      "global": false
     }
   },
   "permissions": [
