@@ -1,9 +1,11 @@
 # はじめに
 
-このリポジトリは、バーチャルオフィス oVice ユーザーとしてあるといいなと感じた機能を  
+このリポジトリは、[バーチャルオフィス oVice](https://ovice.in/ja/) ユーザーとしてあるといいなと感じた機能を  
 手軽に使えるようにChrome拡張機能化するために作成したリポジトリです。
 
-https://ovice.in/ja/
+[Chrome拡張機能インストールページ](https://chrome.google.com/webstore/detail/ovice-controller-extensio/bebojhcmkpcojcalbadohngjiacdcdde?hl=ja&authuser=0)  
+![oVice_controller_extension](https://user-images.githubusercontent.com/15701307/164227814-36149a49-9f6e-49be-9c14-9546f454ba7c.gif)
+
 
 ## 実装している機能
 
@@ -36,6 +38,12 @@ https://ovice.in/ja/
 - 任意のボタンで動作を実行  
 ![スクリーンショット 2022-04-18 2 10 34](https://user-images.githubusercontent.com/15701307/163725121-df885c5d-a0d6-4057-8b64-f37d1700d2fc.png)
 
+
+## デザイン
+
+### Figmaデザインカンプ
+
+https://www.figma.com/file/NxcSkKSOat93POTMj6GS0V/OVCE?node-id=0%3A1
 
 
 
