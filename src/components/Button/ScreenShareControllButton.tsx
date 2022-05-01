@@ -22,7 +22,7 @@ export const ScreenShareControllButton: VFC = () => {
         () => (
             <IconButton
                 tips='Operate The Screen Share'
-                title='screenShare'
+                title='screen'
                 size='large'
                 on={screenShare}
                 disabled={!hasScreenShare}

@@ -421,58 +421,71 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                     Number(data.ovice_tab_id),
                     { selected: true },
                     function (tab) {
-                        chrome.scripting.executeScript(
-                            {
-                                target: { tabId: tab.id },
-                                func: () => {
-                                    const ele = document?.querySelector(
-                                        '#screenshare-block > div'
-                                    )
-                                    if (ele) {
-                                        ele['click']()
-                                    } else {
-                                        const eleList =
-                                            document?.querySelectorAll(
-                                                '.dynamic-object-element'
-                                            )
-                                        if (eleList) {
-                                            eleList.forEach((ele) => {
-                                                if (ele?.querySelector('img')) {
-                                                    if (
-                                                        [
-                                                            ...ele?.querySelectorAll(
-                                                                'img'
-                                                            ),
-                                                        ].filter((item) =>
-                                                            item?.[
-                                                                'src'
-                                                            ]?.includes(
-                                                                'screenshare'
-                                                            )
-                                                        ).length !== 0
-                                                    ) {
-                                                        ele['click']()
-                                                    }
-                                                }
-                                            })
-                                        }
-                                    }
-                                },
-                            },
+                        chrome.windows.update(
+                            tab.windowId,
+                            { focused: true },
                             () => {
-                                if (chrome.runtime.lastError) {
-                                    testMode &&
-                                        console.error(
-                                            'error:',
-                                            chrome.runtime.lastError.message
+                                chrome.scripting.executeScript(
+                                    {
+                                        target: { tabId: tab.id },
+                                        func: () => {
+                                            const ele = document?.querySelector(
+                                                '#screenshare-block > div'
+                                            )
+                                            if (ele) {
+                                                ele['click']()
+                                            } else {
+                                                const eleList =
+                                                    document?.querySelectorAll(
+                                                        '.dynamic-object-element'
+                                                    )
+                                                if (eleList) {
+                                                    eleList.forEach((ele) => {
+                                                        if (
+                                                            ele?.querySelector(
+                                                                'img'
+                                                            )
+                                                        ) {
+                                                            if (
+                                                                [
+                                                                    ...ele?.querySelectorAll(
+                                                                        'img'
+                                                                    ),
+                                                                ].filter(
+                                                                    (item) =>
+                                                                        item?.[
+                                                                            'src'
+                                                                        ]?.includes(
+                                                                            'screenshare'
+                                                                        )
+                                                                ).length !== 0
+                                                            ) {
+                                                                ele['click']()
+                                                            }
+                                                        }
+                                                    })
+                                                }
+                                            }
+                                        },
+                                    },
+                                    () => {
+                                        if (chrome.runtime.lastError) {
+                                            testMode &&
+                                                console.error(
+                                                    'error:',
+                                                    chrome.runtime.lastError
+                                                        .message
+                                                )
+                                            return
+                                        }
+                                        chrome.runtime.sendMessage(
+                                            'get_ovice_status',
+                                            (res) => {
+                                                testMode &&
+                                                    console.log('res', res)
+                                                sendResponse({})
+                                            }
                                         )
-                                    return
-                                }
-                                chrome.runtime.sendMessage(
-                                    'get_ovice_status',
-                                    (res) => {
-                                        testMode && console.log('res', res)
-                                        sendResponse({})
                                     }
                                 )
                             }
@@ -487,6 +500,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                     Number(data.ovice_tab_id),
                     { selected: true },
                     function (tab) {
+                        chrome.windows.update(tab.windowId, { focused: true })
                         sendResponse({})
                     }
                 )
@@ -514,45 +528,62 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             break
         case 'action_rest':
             chrome.storage.local.get(['ovice_tab_id'], (data) => {
-                chrome.scripting.executeScript(
-                    {
-                        target: { tabId: Number(data.ovice_tab_id) },
-                        func: () => {
-                            const ele = document?.querySelector('#away-block')
-                            if (ele) {
-                                ele['click']()
-                            }
-                        },
-                    },
-                    () => {
-                        if (chrome.runtime.lastError) {
-                            testMode &&
-                                console.error(
-                                    'error:',
-                                    chrome.runtime.lastError.message
-                                )
-                            return
-                        }
-                        chrome.runtime.sendMessage(
-                            'get_ovice_status',
-                            (res) => {
-                                if (chrome.runtime.lastError) {
-                                    testMode &&
-                                        console.error(
-                                            'error:',
-                                            chrome.runtime.lastError.message
+                chrome.tabs.update(
+                    Number(data.ovice_tab_id),
+                    { selected: true },
+                    function (tab) {
+                        chrome.windows.update(
+                            tab.windowId,
+                            {
+                                focused: true,
+                            },
+                            () => {
+                                chrome.scripting.executeScript(
+                                    {
+                                        target: {
+                                            tabId: Number(data.ovice_tab_id),
+                                        },
+                                        func: () => {
+                                            const ele =
+                                                document?.querySelector(
+                                                    '#away-block'
+                                                )
+                                            if (ele) {
+                                                ele['click']()
+                                            }
+                                        },
+                                    },
+                                    () => {
+                                        if (chrome.runtime.lastError) {
+                                            testMode &&
+                                                console.error(
+                                                    'error:',
+                                                    chrome.runtime.lastError
+                                                        .message
+                                                )
+                                            return
+                                        }
+                                        chrome.runtime.sendMessage(
+                                            'get_ovice_status',
+                                            (res) => {
+                                                if (chrome.runtime.lastError) {
+                                                    testMode &&
+                                                        console.error(
+                                                            'error:',
+                                                            chrome.runtime
+                                                                .lastError
+                                                                .message
+                                                        )
+                                                    return
+                                                }
+                                                testMode &&
+                                                    console.log('res', res)
+                                                getStatus()
+                                                sendResponse({})
+                                            }
                                         )
-                                    return
-                                }
-                                testMode && console.log('res', res)
-                                chrome.tabs.update(
-                                    Number(data.ovice_tab_id),
-                                    { selected: true },
-                                    function (tab) {
-                                        getStatus()
                                     }
                                 )
-                                sendResponse({})
                             }
                         )
                     }
@@ -561,51 +592,64 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             break
         case 'action_leave':
             chrome.storage.local.get(['ovice_tab_id'], (data) => {
-                chrome.scripting.executeScript(
-                    {
-                        target: { tabId: Number(data.ovice_tab_id) },
-                        func: () => {
-                            const ele = document?.querySelector(
-                                '#leave-openspace-block'
-                            )
-                            if (ele) {
-                                ele['click']()
-                            }
-                            const ele2 =
-                                document?.querySelector('#leave-room-block')
-                            if (ele2) {
-                                ele2['click']()
-                            }
-                        },
-                    },
-                    () => {
-                        if (chrome.runtime.lastError) {
-                            testMode &&
-                                console.error(
-                                    'error:',
-                                    chrome.runtime.lastError.message
-                                )
-                            return
-                        }
-                        chrome.runtime.sendMessage(
-                            'get_ovice_status',
-                            (res) => {
-                                if (chrome.runtime.lastError) {
-                                    testMode &&
-                                        console.error(
-                                            'error:',
-                                            chrome.runtime.lastError.message
+                chrome.tabs.update(
+                    Number(data.ovice_tab_id),
+                    { selected: true },
+                    function (tab) {
+                        chrome.windows.update(
+                            tab.windowId,
+                            {
+                                focused: true,
+                            },
+                            () => {
+                                chrome.scripting.executeScript(
+                                    {
+                                        target: { tabId: tab.id },
+                                        func: () => {
+                                            const ele = document?.querySelector(
+                                                '#leave-openspace-block'
+                                            )
+                                            if (ele) {
+                                                ele['click']()
+                                            }
+                                            const ele2 =
+                                                document?.querySelector(
+                                                    '#leave-room-block'
+                                                )
+                                            if (ele2) {
+                                                ele2['click']()
+                                            }
+                                        },
+                                    },
+                                    () => {
+                                        if (chrome.runtime.lastError) {
+                                            testMode &&
+                                                console.error(
+                                                    'error:',
+                                                    chrome.runtime.lastError
+                                                        .message
+                                                )
+                                            return
+                                        }
+                                        chrome.runtime.sendMessage(
+                                            'get_ovice_status',
+                                            (res) => {
+                                                if (chrome.runtime.lastError) {
+                                                    testMode &&
+                                                        console.error(
+                                                            'error:',
+                                                            chrome.runtime
+                                                                .lastError
+                                                                .message
+                                                        )
+                                                    return
+                                                }
+                                                getStatus()
+                                                sendResponse(res)
+                                            }
                                         )
-                                    return
-                                }
-                                chrome.tabs.update(
-                                    Number(data.ovice_tab_id),
-                                    { selected: true },
-                                    function (tab) {
-                                        getStatus()
                                     }
                                 )
-                                sendResponse(res)
                             }
                         )
                     }
