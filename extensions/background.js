@@ -21,6 +21,19 @@ chrome.runtime.onInstalled.addListener(() => {
     console.log('Installed')
 })
 
+chrome.commands.onCommand.addListener((command) => {
+    console.log(`Command: ${command}`)
+    if (command === 'ovice_option') {
+        // chrome.runtime.openOptionsPage(() => {})
+        chrome.windows.create({
+            type: 'popup',
+            url: './dist/index.html',
+            height: 230,
+            width: 450,
+        })
+    }
+})
+
 const checkOviceUrl = (url) => {
     const reg = /https?:\/\/.*?\.ovice\.in\/(@room_id-\d+|@\d+,\d+)+/
     return reg.exec(url)
