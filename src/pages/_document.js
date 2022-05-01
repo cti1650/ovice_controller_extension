@@ -1,22 +1,22 @@
-import Document, { Html, Head, Main, NextScript } from 'next/document';
+import Document, { Html, Head, Main, NextScript } from 'next/document'
 
 class MyDocument extends Document {
-  static async getInitialProps(ctx) {
-    const initialProps = await Document.getInitialProps(ctx);
-    return { ...initialProps };
-  }
+    static async getInitialProps(ctx) {
+        const initialProps = await Document.getInitialProps(ctx)
+        return { ...initialProps }
+    }
 
-  render() {
-    return (
-      <Html>
-        <Head />
-        <body style={{ margin: '0px' }} className='bg-gray-800'>
-          <Main />
-          <NextScript />
-        </body>
-      </Html>
-    );
-  }
+    render() {
+        return (
+            <Html>
+                <Head />
+                <body style={{ margin: '0px' }} className='bg-[#F8F8F8]'>
+                    <Main />
+                    <NextScript />
+                </body>
+            </Html>
+        )
+    }
 }
 
-export default MyDocument;
+export default MyDocument
