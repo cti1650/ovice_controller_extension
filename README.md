@@ -34,10 +34,17 @@
 - 拡張機能の表示・非表示を切り替え  
 ![スクリーンショット 2022-04-18 2 09 15](https://user-images.githubusercontent.com/15701307/163725085-1a18b160-6858-47d0-99b7-21d76bbf7abc.png)
 
+### アクションページから実行
 - 拡張機能のアクションボタンを押下  
 - 任意のボタンで動作を実行  
 ![スクリーンショット 2022-04-18 2 10 34](https://user-images.githubusercontent.com/15701307/163725121-df885c5d-a0d6-4057-8b64-f37d1700d2fc.png)
 
+### ポップアップウィンドウから実行
+![スクリーンショット 2022-05-02 4 45 56](https://user-images.githubusercontent.com/15701307/166162432-c82825e2-e599-4164-adfc-cf7ed5ab3b83.png)
+
+
+### ショートカットキーから実行
+![スクリーンショット 2022-05-02 4 46 06](https://user-images.githubusercontent.com/15701307/166162382-d0561b1a-b6a9-4f8a-b19e-976e66d1dbd0.png)
 
 ## デザイン
 
