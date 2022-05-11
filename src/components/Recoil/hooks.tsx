@@ -42,7 +42,7 @@ export const useTabState = () => {
         const tick = setInterval(async () => {
             const result = await getStorageData(tab)
             if (result) {
-                console.log('result', result)
+                // console.log('result', result)
                 setTab({ ...tab, ...result })
             }
         }, 200)
