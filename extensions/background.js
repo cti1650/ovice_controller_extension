@@ -1,19 +1,23 @@
 const testMode = false
 
+const storageResetData = {
+    ovice_tab_title: '',
+    ovice_place: '',
+    ovice_place_type: 'none',
+    ovice_has_logout: false,
+    ovice_has_openspace: false,
+    ovice_has_coffee: false,
+    ovice_has_screenshare: false,
+    ovice_has_mic: false,
+    ovice_screenshare_on: false,
+    ovice_mic_on: false,
+    ovice_volume_on: true,
+}
+
 chrome.runtime.onInstalled.addListener(() => {
     chrome.storage.local.set({
         ovice_tab_id: 0,
-        ovice_tab_title: '',
-        ovice_place: '',
-        ovice_place_type: 'none',
-        ovice_has_logout: false,
-        ovice_has_openspace: false,
-        ovice_has_coffee: false,
-        ovice_has_screenshare: false,
-        ovice_has_mic: false,
-        ovice_screenshare_on: false,
-        ovice_mic_on: false,
-        ovice_volume_on: true,
+        ...storageResetData,
     })
     chrome.action.setIcon({
         path: 'icons/icon_32_none.png',
@@ -93,19 +97,7 @@ const polingOviceStatus = (url, tabId) => {
                             ovice_tab_id: 0,
                         })
                     }
-                    chrome.storage.local.set({
-                        ovice_tab_title: '',
-                        ovice_place: '',
-                        ovice_place_type: 'none',
-                        ovice_has_logout: false,
-                        ovice_has_openspace: false,
-                        ovice_has_coffee: false,
-                        ovice_has_screenshare: false,
-                        ovice_has_mic: false,
-                        ovice_screenshare_on: false,
-                        ovice_mic_on: false,
-                        ovice_volume_on: true,
-                    })
+                    chrome.storage.local.set(storageResetData)
                     chrome.action.setIcon({
                         path: 'icons/icon_32_none.png',
                     })
@@ -122,17 +114,7 @@ const polingOviceStatus = (url, tabId) => {
             } else {
                 chrome.storage.local.set({
                     ovice_tab_id: 0,
-                    ovice_tab_title: '',
-                    ovice_place: '',
-                    ovice_place_type: 'none',
-                    ovice_has_logout: false,
-                    ovice_has_openspace: false,
-                    ovice_has_coffee: false,
-                    ovice_has_screenshare: false,
-                    ovice_has_mic: false,
-                    ovice_screenshare_on: false,
-                    ovice_mic_on: false,
-                    ovice_volume_on: true,
+                    ...storageResetData,
                 })
                 chrome.action.setIcon({
                     path: 'icons/icon_32_none.png',
@@ -149,19 +131,7 @@ const tick = setInterval(() => {
     if (counter % 20 === 0) {
         polingOviceStatus('', 0)
         chrome.storage.local.get(
-            [
-                'ovice_tab_id',
-                'ovice_place',
-                'ovice_place_type',
-                'ovice_has_logout',
-                'ovice_has_openspace',
-                'ovice_has_coffee',
-                'ovice_has_screenshare',
-                'ovice_has_mic',
-                'ovice_mic_on',
-                'ovice_volume_on',
-                'ovice_screenshare_on',
-            ],
+            ['ovice_tab_id', ...Object.keys(storageResetData)],
             (data) => {
                 testMode && console.log('ovice_status', data)
                 if (data?.ovice_place_type !== 'none') {
@@ -547,19 +517,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         case 'get_ovice_status':
             polingOviceStatus('', 0)
             chrome.storage.local.get(
-                [
-                    'ovice_tab_id',
-                    'ovice_place',
-                    'ovice_place_type',
-                    'ovice_has_logout',
-                    'ovice_has_openspace',
-                    'ovice_has_coffee',
-                    'ovice_has_screenshare',
-                    'ovice_has_mic',
-                    'ovice_mic_on',
-                    'ovice_volume_on',
-                    'ovice_screenshare_on',
-                ],
+                ['ovice_tab_id', ...Object.keys(storageResetData)],
                 (data) => {
                     testMode && console.log('ovice_status', data)
                     sendResponse(data)
