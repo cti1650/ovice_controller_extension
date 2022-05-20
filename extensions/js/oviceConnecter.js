@@ -19,6 +19,9 @@
                 !!document?.querySelector('#leave-openspace-block') ||
                 !!document?.querySelector(
                     '.MuiBox-root > button.MuiIconButton-root.MuiIconButton-colorInfo:last-child'
+                ) ||
+                !!document?.querySelector(
+                    '.MuiAppBar-root  > .MuiToolbar-regular > .MuiButtonBase-root.MuiIconButton-sizeMedium'
                 ),
             hasOpenSpace:
                 !!document?.querySelector('#leave-room-block') ||
@@ -30,6 +33,9 @@
                 !!document?.querySelector('#leave-room-block') ||
                 !!document?.querySelector(
                     '.MuiBox-root > button.MuiIconButton-root.MuiIconButton-colorInfo:last-child'
+                ) ||
+                !!document?.querySelector(
+                    '.MuiAppBar-root  > .MuiToolbar-regular > .MuiButtonBase-root.MuiIconButton-sizeMedium'
                 ),
             hasCoffee:
                 !!document?.querySelector('#away-block') ||
@@ -214,9 +220,25 @@
                 document?.querySelector(
                     '.MuiBox-root > button.MuiIconButton-root.MuiIconButton-colorInfo:last-child'
                 ) ||
+                document?.querySelector(
+                    '.MuiPaper-root > ul > div:first-child'
+                ) ||
                 document?.querySelector('#away-block')
             if (ele) {
                 ele['click']()
+            } else {
+                const menuButton = document?.querySelector(
+                    '.MuiAppBar-root  > .MuiToolbar-regular > .MuiButtonBase-root.MuiIconButton-sizeMedium'
+                )
+                if (menuButton) {
+                    menuButton['click']()
+                    const leaveButton = document?.querySelector(
+                        '.MuiPaper-root > ul > div:first-child'
+                    )
+                    if (leaveButton) {
+                        leaveButton['click']()
+                    }
+                }
             }
         }
 
