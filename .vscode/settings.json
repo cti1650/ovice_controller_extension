@@ -25,5 +25,6 @@
         "editor.formatOnSave": true,
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
-    "prettier.jsxBracketSameLine": false
+    "prettier.jsxBracketSameLine": false,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
 }

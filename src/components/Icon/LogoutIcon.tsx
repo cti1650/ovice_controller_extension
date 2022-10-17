@@ -1,6 +1,10 @@
-import { VFC } from "react";
-import { MdLogout } from "react-icons/md";
+import { VFC } from 'react'
+import { FaSignOutAlt } from 'react-icons/fa'
 
 export const LogoutIcon: VFC = () => {
-  return (<><MdLogout /></>)
+    return (
+        <>
+            <FaSignOutAlt />
+        </>
+    )
 }

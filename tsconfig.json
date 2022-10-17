@@ -19,10 +19,17 @@
     "jsx": "preserve",
     "baseUrl": "./",
     "paths": {
-      "@styles/*": ["styles/*"],
-      "@pages/*": ["src/pages/*"],
-      "@components/*": ["src/components/*"],
-    }
+      "@styles/*": [
+        "styles/*"
+      ],
+      "@pages/*": [
+        "src/pages/*"
+      ],
+      "@components/*": [
+        "src/components/*"
+      ]
+    },
+    "incremental": true
   },
   "exclude": [
     "node_modules"

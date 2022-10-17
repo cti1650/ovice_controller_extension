@@ -1,28 +1,24 @@
 const testMode = false
 
-const storageResetData = {
-    ovice_tab_title: '',
-    ovice_place: '',
-    ovice_place_type: 'none',
-    ovice_has_logout: false,
-    ovice_has_openspace: false,
-    ovice_has_coffee: false,
-    ovice_has_screenshare: false,
-    ovice_has_mic: false,
-    ovice_screenshare_on: false,
-    ovice_mic_on: false,
-    ovice_volume_on: true,
-}
-
 chrome.runtime.onInstalled.addListener(() => {
     chrome.storage.local.set({
         ovice_tab_id: 0,
-        ...storageResetData,
+        ovice_tab_title: '',
+        ovice_place: '',
+        ovice_place_type: 'none',
+        ovice_has_logout: false,
+        ovice_has_openspace: false,
+        ovice_has_coffee: false,
+        ovice_has_screenshare: false,
+        ovice_has_mic: false,
+        ovice_screenshare_on: false,
+        ovice_mic_on: false,
+        ovice_volume_on: true,
     })
     chrome.action.setIcon({
         path: 'icons/icon_32_none.png',
     })
-    testMode && console.log('Installed')
+    console.log('Installed')
 })
 
 const checkOviceUrl = (url) => {
@@ -48,6 +44,59 @@ const addScript = (funcOption = {}, callback) => {
     })
 }
 
+const flagChecker = () => {
+    chrome.storage.local.set({
+        ovice_tab_title: document.title,
+        ovice_has_logout: !!document?.querySelector('#leave-openspace-block'),
+        ovice_has_openspace: !!document?.querySelector('#leave-room-block'),
+        ovice_has_coffee: !!document?.querySelector('#away-block'),
+    })
+    const screenshare_ele = document?.querySelector('#screenshare-block > div')
+    if (screenshare_ele) {
+        chrome.storage.local.set({
+            ovice_has_screenshare: true,
+            ovice_screenshare_on:
+                !!screenshare_ele?.querySelector('i.bar-device-on'),
+        })
+    } else {
+        const eleList = document?.querySelectorAll('.dynamic-object-element')
+        if (eleList) {
+            eleList.forEach((ele) => {
+                if (!ele) return
+                if (
+                    ele?.querySelector('img')?.['src']?.includes('screenshare')
+                ) {
+                    chrome.storage.local.set({
+                        ovice_has_screenshare: true,
+                        ovice_screenshare_on:
+                            !!ele?.querySelector('i.bar-device-on'),
+                    })
+                }
+            })
+        } else {
+            chrome.storage.local.set({
+                ovice_has_screenshare: false,
+                ovice_screenshare_on: false,
+            })
+        }
+    }
+    const mic_ele = document?.querySelector('#mic-block > div')
+    if (mic_ele) {
+        if (mic_ele.querySelector('.bar-device-off')) {
+            chrome.storage.local.set({
+                ovice_has_mic: true,
+                ovice_mic_on: false,
+            })
+        }
+        if (mic_ele.querySelector('.bar-device-on')) {
+            chrome.storage.local.set({
+                ovice_has_mic: true,
+                ovice_mic_on: true,
+            })
+        }
+    }
+}
+
 const polingOviceStatus = (url, tabId) => {
     const data = checkOviceUrl(url)
     if (data) {
@@ -65,7 +114,7 @@ const polingOviceStatus = (url, tabId) => {
             chrome.scripting.executeScript(
                 {
                     target: { tabId: tabId },
-                    files: ['js/oviceConnecter.js', 'js/flagChecker.js'],
+                    func: flagChecker,
                 },
                 () => {
                     if (chrome.runtime.lastError) {
@@ -97,7 +146,19 @@ const polingOviceStatus = (url, tabId) => {
                             ovice_tab_id: 0,
                         })
                     }
-                    chrome.storage.local.set(storageResetData)
+                    chrome.storage.local.set({
+                        ovice_tab_title: '',
+                        ovice_place: '',
+                        ovice_place_type: 'none',
+                        ovice_has_logout: false,
+                        ovice_has_openspace: false,
+                        ovice_has_coffee: false,
+                        ovice_has_screenshare: false,
+                        ovice_has_mic: false,
+                        ovice_screenshare_on: false,
+                        ovice_mic_on: false,
+                        ovice_volume_on: true,
+                    })
                     chrome.action.setIcon({
                         path: 'icons/icon_32_none.png',
                     })
@@ -114,7 +175,17 @@ const polingOviceStatus = (url, tabId) => {
             } else {
                 chrome.storage.local.set({
                     ovice_tab_id: 0,
-                    ...storageResetData,
+                    ovice_tab_title: '',
+                    ovice_place: '',
+                    ovice_place_type: 'none',
+                    ovice_has_logout: false,
+                    ovice_has_openspace: false,
+                    ovice_has_coffee: false,
+                    ovice_has_screenshare: false,
+                    ovice_has_mic: false,
+                    ovice_screenshare_on: false,
+                    ovice_mic_on: false,
+                    ovice_volume_on: true,
                 })
                 chrome.action.setIcon({
                     path: 'icons/icon_32_none.png',
@@ -131,7 +202,19 @@ const tick = setInterval(() => {
     if (counter % 20 === 0) {
         polingOviceStatus('', 0)
         chrome.storage.local.get(
-            ['ovice_tab_id', ...Object.keys(storageResetData)],
+            [
+                'ovice_tab_id',
+                'ovice_place',
+                'ovice_place_type',
+                'ovice_has_logout',
+                'ovice_has_openspace',
+                'ovice_has_coffee',
+                'ovice_has_screenshare',
+                'ovice_has_mic',
+                'ovice_mic_on',
+                'ovice_volume_on',
+                'ovice_screenshare_on',
+            ],
             (data) => {
                 testMode && console.log('ovice_status', data)
                 if (data?.ovice_place_type !== 'none') {
@@ -150,16 +233,6 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
             if (changeInfo?.status === 'complete' || changeInfo?.favIconUrl) {
                 testMode && console.log('tab url', tab.url)
                 testMode && console.log('changeInfo', changeInfo)
-                chrome.scripting.executeScript(
-                    {
-                        target: { tabId: tabId },
-                        files: [
-                            'js/oviceConnecter.js',
-                            'js/oviceConnecterTick.js',
-                        ],
-                    },
-                    () => {}
-                )
                 polingOviceStatus(tab.url, tabId)
             }
         } else {
@@ -276,7 +349,12 @@ const actionMicChange = () => {
         chrome.scripting.executeScript(
             {
                 target: { tabId: Number(data.ovice_tab_id) },
-                files: ['js/oviceConnecter.js', 'js/micChange.js'],
+                func: () => {
+                    const ele = document?.querySelector('#mic-block > div')
+                    if (ele) {
+                        ele['click']()
+                    }
+                },
             },
             () => {
                 if (chrome.runtime.lastError) {
@@ -306,10 +384,37 @@ const actionScreenshareChange = () => {
                     chrome.scripting.executeScript(
                         {
                             target: { tabId: tab.id },
-                            files: [
-                                'js/oviceConnecter.js',
-                                'js/screenShareChange.js',
-                            ],
+                            func: () => {
+                                const ele = document?.querySelector(
+                                    '#screenshare-block > div'
+                                )
+                                if (ele) {
+                                    ele['click']()
+                                } else {
+                                    const eleList = document?.querySelectorAll(
+                                        '.dynamic-object-element'
+                                    )
+                                    if (eleList) {
+                                        eleList.forEach((ele) => {
+                                            if (ele?.querySelector('img')) {
+                                                if (
+                                                    [
+                                                        ...ele?.querySelectorAll(
+                                                            'img'
+                                                        ),
+                                                    ].filter((item) =>
+                                                        item?.['src']?.includes(
+                                                            'screenshare'
+                                                        )
+                                                    ).length !== 0
+                                                ) {
+                                                    ele['click']()
+                                                }
+                                            }
+                                        })
+                                    }
+                                }
+                            },
                         },
                         () => {
                             if (chrome.runtime.lastError) {
@@ -383,10 +488,13 @@ const actionRest = () => {
                                 target: {
                                     tabId: Number(data.ovice_tab_id),
                                 },
-                                files: [
-                                    'js/oviceConnecter.js',
-                                    'js/actionRest.js',
-                                ],
+                                func: () => {
+                                    const ele =
+                                        document?.querySelector('#away-block')
+                                    if (ele) {
+                                        ele['click']()
+                                    }
+                                },
                             },
                             () => {
                                 if (chrome.runtime.lastError) {
@@ -438,10 +546,21 @@ const actionLeave = () => {
                         chrome.scripting.executeScript(
                             {
                                 target: { tabId: tab.id },
-                                files: [
-                                    'js/oviceConnecter.js',
-                                    'js/actionLeave.js',
-                                ],
+                                func: () => {
+                                    const ele = document?.querySelector(
+                                        '#leave-openspace-block'
+                                    )
+                                    if (ele) {
+                                        ele['click']()
+                                    }
+                                    const ele2 =
+                                        document?.querySelector(
+                                            '#leave-room-block'
+                                        )
+                                    if (ele2) {
+                                        ele2['click']()
+                                    }
+                                },
                             },
                             () => {
                                 if (chrome.runtime.lastError) {
@@ -517,7 +636,19 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         case 'get_ovice_status':
             polingOviceStatus('', 0)
             chrome.storage.local.get(
-                ['ovice_tab_id', ...Object.keys(storageResetData)],
+                [
+                    'ovice_tab_id',
+                    'ovice_place',
+                    'ovice_place_type',
+                    'ovice_has_logout',
+                    'ovice_has_openspace',
+                    'ovice_has_coffee',
+                    'ovice_has_screenshare',
+                    'ovice_has_mic',
+                    'ovice_mic_on',
+                    'ovice_volume_on',
+                    'ovice_screenshare_on',
+                ],
                 (data) => {
                     testMode && console.log('ovice_status', data)
                     sendResponse(data)

@@ -1,9 +1,11 @@
 # はじめに
 
-このリポジトリは、バーチャルオフィス oVice ユーザーとしてあるといいなと感じた機能を  
+このリポジトリは、[バーチャルオフィス oVice](https://ovice.in/ja/) ユーザーとしてあるといいなと感じた機能を  
 手軽に使えるようにChrome拡張機能化するために作成したリポジトリです。
 
-https://ovice.in/ja/
+[Chrome拡張機能インストールページ](https://chrome.google.com/webstore/detail/ovice-controller-extensio/bebojhcmkpcojcalbadohngjiacdcdde?hl=ja&authuser=0)  
+![oVice_controller_extension](https://user-images.githubusercontent.com/15701307/164227814-36149a49-9f6e-49be-9c14-9546f454ba7c.gif)
+
 
 ## 実装している機能
 
@@ -32,10 +34,23 @@ https://ovice.in/ja/
 - 拡張機能の表示・非表示を切り替え  
 ![スクリーンショット 2022-04-18 2 09 15](https://user-images.githubusercontent.com/15701307/163725085-1a18b160-6858-47d0-99b7-21d76bbf7abc.png)
 
+### アクションページから実行
 - 拡張機能のアクションボタンを押下  
 - 任意のボタンで動作を実行  
 ![スクリーンショット 2022-04-18 2 10 34](https://user-images.githubusercontent.com/15701307/163725121-df885c5d-a0d6-4057-8b64-f37d1700d2fc.png)
 
+### ポップアップウィンドウから実行
+![スクリーンショット 2022-05-02 4 45 56](https://user-images.githubusercontent.com/15701307/166162432-c82825e2-e599-4164-adfc-cf7ed5ab3b83.png)
+
+
+### ショートカットキーから実行
+![スクリーンショット 2022-05-02 4 46 06](https://user-images.githubusercontent.com/15701307/166162382-d0561b1a-b6a9-4f8a-b19e-976e66d1dbd0.png)
+
+## デザイン
+
+### Figmaデザインカンプ
+
+https://www.figma.com/file/NxcSkKSOat93POTMj6GS0V/OVCE?node-id=0%3A1
 
 
 
